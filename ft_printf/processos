@@ -1,0 +1,64 @@
+    Analisar a string de formato: Percorra a string de formato e 
+    identifique os especificadores de conversão, bem como quaisquer 
+    flags de formatação associadas a cada especificador.
+
+    Interpretar os especificadores de formato: Com base nos 
+    especificadores de conversão e nas flags de formatação, 
+    determine como formatar cada argumento correspondente.
+
+    Gerenciar flags de formatação: Para cada especificador de 
+    formato, aplique as flags de formatação apropriadas, como 
+    alinhamento à esquerda, preenchimento com zeros e precisão para
+     números de ponto flutuante.
+
+    Determinar a largura mínima do campo: Se uma largura mínima do 
+    campo for especificada, ajuste o formato de saída conforme 
+    necessário para garantir que a saída formatada atenda às 
+    exigências de largura mínima.
+
+    Formatar a saída: Use as informações coletadas para formatar 
+    cada argumento de acordo com os especificadores de conversão e 
+    as flags de formatação correspondentes.
+
+    Imprimir a saída formatada: Uma vez que todos os argumentos 
+    tenham sido formatados corretamente, imprima ou exiba a 
+    saída formatada conforme necessário.
+
+    Combinação de flags: A função printf possui três flags 
+    comumente utilizados: 
+    '-' (alinhamento à esquerda), 
+    '0' (preenchimento com zeros) 
+    '.' (precisão para números de ponto flutuante).
+    Sua implementação deve ser capaz de lidar com qualquer 
+    combinação desses flags.
+
+    Largura mínima do campo: É a quantidade mínima de caracteres 
+    que um campo de saída deve ter. Por exemplo, se você 
+    especificar uma largura mínima de 10 caracteres e o 
+    argumento de saída tiver apenas 5 caracteres, a 
+    função printf deve preencher os caracteres restantes 
+    com espaços ou zeros, dependendo dos flags especificados.
+
+    '#': Esta flag é usada em algumas conversões específicas para 
+    indicar que um prefixo especial deve ser incluído na saída. 
+    Por exemplo, em conversões hexadecimais (%x e %X), a flag '#' 
+    adiciona o prefixo "0x" ou "0X" à frente do número.
+
+    '+': Esta flag é usada para garantir que números positivos 
+    sejam precedidos por um sinal de adição '+' e números negativos
+     continuem a ser precedidos por um sinal de menos '-'.
+
+    ' ': Esta flag é usada para garantir que números positivos 
+    sejam precedidos por um espaço em branco, se eles não 
+    estiverem precedidos por um sinal de mais ou menos.
+
+    Para implementar isso, você precisará analisar a string de 
+    formato, identificar as flags relevantes para cada 
+    especificador de conversão e ajustar a formatação de acordo 
+    com as flags encontradas. Por exemplo, se a flag '#' estiver 
+    presente em uma conversão hexadecimais, você deve adicionar o 
+    prefixo "0x" ou "0X" à saída formatada. Se a flag '+' estiver 
+    presente e o número for positivo, você deve adicionar um sinal 
+    de adição '+' à saída formatada. Se a flag ' ' estiver presente
+     e o número for positivo, você deve adicionar um espaço em 
+     branco à saída formatada.
