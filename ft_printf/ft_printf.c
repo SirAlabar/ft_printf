@@ -6,7 +6,7 @@
 /*   By: hluiz-ma <hluiz-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:48:39 by hluiz-ma          #+#    #+#             */
-/*   Updated: 2024/05/09 21:39:40 by hluiz-ma         ###   ########.fr       */
+/*   Updated: 2024/05/10 21:15:52 by hluiz-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,13 @@ int ft_printf(const char *format, ...)
     count = 0;
     while(format[i])
     {
-        if(format[i] != '%')
+        if(format[i] == '%')
         {
-                 count += ft_putchar(format[i]);       
+            i++;
+            count += ft_format(format, &i, args);       
         }
-        i++;
+        else
+            count += ft_putchar(format[i++]);
     }
     va_end(args);
     return (count);
@@ -37,8 +39,12 @@ int ft_printf(const char *format, ...)
 
 int main()
 {
-    ft_printf("abcd");
-    ft_printf("%d", 5);
+    char letter = 'H';
+    char *str = "sdhSUhdUSD";
+
+    ft_printf("abcd\n");
+    ft_printf("%c\n", letter);
+    ft_printf("%ss\n", str);
 }
 
 
