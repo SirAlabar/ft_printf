@@ -77,9 +77,9 @@ int	ft_format(const char *format, unsigned int *i, va_list args)
 	else if (format[*i] == 'd' || format[*i] == 'i')
 		count += ft_print_decimal(va_arg(args, int), 10, 'd');
 	else if (format[*i] == 'x')
-		count += ft_print_decimal(va_arg(args, long int), 16, 'x');
+		count += ft_print_decimal(va_arg(args, unsigned int), 16, 'x');
 	else if (format[*i] == 'X')
-		count += ft_print_decimal(va_arg(args, long int), 16, 'X');
+		count += ft_print_decimal(va_arg(args, unsigned int), 16, 'X');
 	else if (format[*i] == 'u')
 		count += ft_print_decimal(va_arg(args, unsigned int), 10, 'u');
 	else if (format[*i] == 'p')
