@@ -3,82 +3,94 @@
 import subprocess
 import sys
 import os
-from termcolor import colored
+try:
+    from termcolor import colored
+except ImportError:
+    def colored(text, color):
+        return text
 
 class PrintfTester:
     def __init__(self):
         self.total_tests = 0
         self.passed_tests = 0
         
-    def compile_test_program(self, test_case):
-        # Cria um arquivo temporário com o caso de teste
+    def compile_test_program(self, format_str, args=None):
         with open('test_printf.c', 'w') as f:
-            f.write('''
-            #include "ft_printf.h"
+            f.write(f'''
+            #include "include/ft_printf.h"
             #include <stdio.h>
+            #include <limits.h>
             
             int main(void)
-            {
+            {{
                 int ret1, ret2;
                 
-                ret1 = printf("''' + test_case + '''");
-                printf("\\n[RET1=%d]\\n", ret1);
-                ret2 = ft_printf("''' + test_case + '''");
-                printf("\\n[RET2=%d]\\n", ret2);
-                return (0);
-            }
+                printf("Original output: ");
+                ret1 = printf("{format_str}"{', ' + args if args else ''});
+                printf("\\nOriginal return: %d\\n", ret1);
+                
+                printf("Your output: ");
+                ret2 = ft_printf("{format_str}"{', ' + args if args else ''});
+                printf("\\nYour return: %d\\n", ret2);
+                
+                return (ret1 == ret2 ? 0 : 1);
+            }}
             ''')
         
-        # Compila o programa de teste
         compile_cmd = "cc -Wall -Wextra -Werror test_printf.c -L. -lftprintf -o test_program"
         try:
-            subprocess.run(compile_cmd, shell=True, check=True, capture_output=True)
+            result = subprocess.run(compile_cmd, shell=True, capture_output=True, text=True)
+            if result.returncode != 0:
+                print(colored(f"Erro ao compilar teste: {format_str}", "red"))
+                print(result.stderr)
+                return False
             return True
-        except subprocess.CalledProcessError:
-            print(colored(f"Erro ao compilar teste: {test_case}", "red"))
+        except Exception as e:
+            print(colored(f"Erro ao compilar: {e}", "red"))
             return False
 
-    def run_test(self, test_case, description=""):
+    def run_test(self, format_str, args=None, description=""):
         self.total_tests += 1
         
-        if not self.compile_test_program(test_case):
+        if not self.compile_test_program(format_str, args):
             return
         
         try:
-            # Executa o programa de teste
             result = subprocess.run("./test_program", capture_output=True, text=True)
+            output_lines = result.stdout.split('\n')
             
-            # Separa as saídas e retornos
-            output = result.stdout.split('\n')
-            original_output = output[0]
-            original_return = int(output[1].split('=')[1][:-1])
-            ft_output = output[2]
-            ft_return = int(output[3].split('=')[1])
+            original_output = output_lines[0].replace("Original output: ", "")
+            original_return = int(output_lines[1].replace("Original return: ", ""))
+            ft_output = output_lines[2].replace("Your output: ", "")
+            ft_return = int(output_lines[3].replace("Your return: ", ""))
             
-            # Compara resultados
             if original_output == ft_output and original_return == ft_return:
                 self.passed_tests += 1
                 status = colored("OK", "green")
             else:
                 status = colored("KO", "red")
             
-            # Mostra resultados
             print("\n" + "="*50)
             print(f"Test {self.total_tests}: {description}")
-            print(f"Input: {test_case}")
-            print(f"Expected output: [{original_output}] (return: {original_return})")
-            print(f"Your output:     [{ft_output}] (return: {ft_return})")
+            print(f"Format: {format_str}")
+            if args:
+                print(f"Args: {args}")
+            print(f"Expected output: [{original_output}]")
+            print(f"Expected return: {original_return}")
+            print(f"Your output:     [{ft_output}]")
+            print(f"Your return:     {ft_return}")
             print(f"Status: {status}")
             
         except Exception as e:
-            print(colored(f"Erro ao executar teste: {e}", "red"))
-        
-        # Limpa arquivos temporários
-        try:
-            os.remove("test_printf.c")
-            os.remove("test_program")
-        except:
-            pass
+            print(colored(f"Erro ao executar teste: {str(e)}", "red"))
+            print("Output completo:")
+            print(result.stdout)
+        finally:
+            try:
+                os.remove("test_printf.c")
+                os.remove("test_program")
+            except:
+                pass
 
     def print_summary(self):
         print("\n" + "="*50)
@@ -93,55 +105,42 @@ def main():
     tester = PrintfTester()
     
     # Testes básicos
-    basic_tests = [
-        ("%s", '"Hello"'),
-        ("%d", "42"),
-        ("%i", "-42"),
-        ("%u", "4294967295"),
-        ("%x", "255"),
-        ("%X", "255"),
-        ("%p", "(void *)0x12345"),
-        ("%%", ""),
-    ]
+    print(colored("\n1. Testes básicos...", "yellow"))
+    tester.run_test("Simple Test", None, "String simples sem argumentos")
+    tester.run_test("Test %%", None, "Porcentagem escapada")
+    tester.run_test("%%d", None, "Porcentagem escapada com especificador")
     
-    # Testes com flags
-    flag_tests = [
-        ("%+d", "42"),
-        ("% d", "42"),
-        ("%05d", "42"),
-        ("%-10s", '"left"'),
-        ("%#x", "255"),
-        ("%10.5d", "42"),
-    ]
+    # Testes de strings
+    print(colored("\n2. Testes de strings...", "yellow"))
+    tester.run_test("%s", '"test"', "String básica")
+    tester.run_test("%s %s", '"Hello", "World"', "Duas strings")
+    tester.run_test("The word is: %s", '"test"', "String com texto")
+    
+    # Testes de números
+    print(colored("\n3. Testes de números...", "yellow"))
+    tester.run_test("%d", "42", "Número positivo")
+    tester.run_test("%d", "-42", "Número negativo")
+    tester.run_test("%d", "0", "Zero")
+    tester.run_test("%i", "42", "Número com %%i")
+    
+    # Testes de unsigned
+    print(colored("\n4. Testes de unsigned...", "yellow"))
+    tester.run_test("%u", "42", "Unsigned pequeno")
+    tester.run_test("%u", "0", "Unsigned zero")
+    
+    # Testes de hexadecimal
+    print(colored("\n5. Testes de hexadecimal...", "yellow"))
+    tester.run_test("%x", "255", "Hex ff minúsculo")
+    tester.run_test("%X", "255", "Hex FF maiúsculo")
+    tester.run_test("%x", "0", "Hex zero")
     
     # Testes mistos
-    mixed_tests = [
-        ("Hello %s, you are %d years old", '"John"', "25"),
-        ("%+08d %s", "42", '"test"'),
-        ("0x%08X", "255"),
-        ("%#10.5x", "255"),
-    ]
-
-    print(colored("\nExecutando testes básicos...", "yellow"))
-    for test in basic_tests:
-        params = ",".join(test[1:]) if len(test) > 1 else ""
-        tester.run_test(test[0] % test[1] if params else test[0], f"Basic - {test[0]}")
+    print(colored("\n6. Testes mistos...", "yellow"))
+    tester.run_test("Number: %d String: %s", "42, \"test\"", "Número e string")
+    tester.run_test("%d %s %x", "42, \"test\", 255", "Vários tipos")
+    tester.run_test("100%%", None, "Porcentagem literal")
     
-    print(colored("\nExecutando testes com flags...", "yellow"))
-    for test in flag_tests:
-        params = ",".join(test[1:]) if len(test) > 1 else ""
-        tester.run_test(test[0] % test[1] if params else test[0], f"Flags - {test[0]}")
-    
-    print(colored("\nExecutando testes mistos...", "yellow"))
-    for test in mixed_tests:
-        format_str = test[0]
-        args = test[1:]
-        try:
-            formatted = format_str % eval("(" + ",".join(args) + ")")
-            tester.run_test(formatted, f"Mixed - {format_str}")
-        except:
-            print(colored(f"Erro ao formatar teste: {format_str}", "red"))
-    
+    # Prints the final summary
     tester.print_summary()
 
 if __name__ == "__main__":

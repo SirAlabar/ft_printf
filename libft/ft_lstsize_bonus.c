@@ -1,25 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstrf.c                                       :+:      :+:    :+:   */
+/*   ft_lstsize_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hluiz-ma <hluiz-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/10 19:13:18 by hluiz-ma          #+#    #+#             */
-/*   Updated: 2024/05/12 10:53:00 by hluiz-ma         ###   ########.fr       */
+/*   Created: 2024/04/11 21:50:00 by hluiz-ma          #+#    #+#             */
+/*   Updated: 2024/05/05 15:21:50 by hluiz-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+/*
+** LIBRARY: N/A
+** SYNOPSIS: count elements of a list
+**
+** DESCRIPTION:
+** 		Counts the number of elements in a list.
+*/
 
-int	ft_putstr(const char *s)
+#include "libft.h"
+
+int	ft_lstsize(t_list *lst)
 {
+	t_list			*tmp;
 	unsigned int	i;
 
-	if (!s)
-		return (write(1, "(null)", 6));
+	tmp = lst;
 	i = 0;
-	while (s[i])
-		write(1, &s[i++], 1);
+	while (tmp)
+	{
+		tmp = tmp->next;
+		i++;
+	}
 	return (i);
 }

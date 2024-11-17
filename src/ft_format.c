@@ -12,28 +12,41 @@
 
 #include "ft_printf.h"
 
-static unsigned int	ft_print_decimal(long int nb, int base, char flag)
+int ft_print_decimal(long n, t_flags *flags)
 {
-	unsigned int	count;
-	char			*symbols;
+    int count;
 
-	symbols = "0123456789abcdef";
-	if (flag == 'X')
-		symbols = "0123456789ABCDEF";
-	count = 0;
-	if (nb < 0)
-	{
-		count += ft_putchar('-');
-		return (ft_print_decimal(-nb, base, flag) + 1);
-	}
-	else if (nb < base)
-		return (ft_putchar(symbols[nb]));
-	else
-	{
-		count += ft_print_decimal(nb / base, base, flag);
-		return (count + ft_print_decimal(nb % base, base, flag));
-	}
-	return (count);
+    count = 0;
+    if (n < 0)
+    {
+        count += ft_putchar('-');
+        return (ft_print_decimal(-n, flags) + 1);
+    }
+    else if (n >= 0 && flags->plus)
+        count += ft_putchar('+');
+    else if (n >= 0 && flags->space)
+        count += ft_putchar(' ');
+    if (n < 10)
+        return (count + ft_putchar(n + '0'));
+    else
+    {
+        count += ft_print_decimal(n / 10, flags);
+        return (count + ft_print_decimal(n % 10, flags));
+    }
+}
+
+int ft_print_unsigned(unsigned int n)
+{
+    int count;
+
+    count = 0;
+    if (n < 10)
+        return (ft_putchar(n + '0'));
+    else
+    {
+        count += ft_print_unsigned(n / 10);
+        return (count + ft_print_unsigned(n % 10));
+    }
 }
 
 static unsigned int	ft_print_p(size_t nb, size_t base, char flag)
@@ -53,40 +66,28 @@ static unsigned int	ft_print_p(size_t nb, size_t base, char flag)
 	return (count);
 }
 
-static unsigned int	ft_print_hexx0(size_t nb)
-{
-	unsigned int	count;
-
-	count = 0;
-	if (nb == 0)
-		return (write(1, "(nil)", 5));
-	count += ft_putstr("0x");
-	count += ft_print_p(nb, 16, 'p');
-	return (count);
-}
-
-int	ft_format(const char *format, unsigned int *i, va_list args)
+int	ft_format(const char *format, unsigned int *i, va_list args, t_flags *flags)
 {
 	unsigned int	count;
 
 	count = 0;
 	if (format[*i] == 'c')
-		count += ft_putchar(va_arg(args, int));
+		count += ft_print_char(va_arg(args, int), flags);
 	else if (format[*i] == 's')
-		count += ft_putstr(va_arg(args, char *));
-	else if (format[*i] == 'd' || format[*i] == 'i')
-		count += ft_print_decimal(va_arg(args, int), 10, 'd');
-	else if (format[*i] == 'x')
-		count += ft_print_decimal(va_arg(args, unsigned int), 16, 'x');
-	else if (format[*i] == 'X')
-		count += ft_print_decimal(va_arg(args, unsigned int), 16, 'X');
-	else if (format[*i] == 'u')
-		count += ft_print_decimal(va_arg(args, unsigned int), 10, 'u');
+		count += ft_print_str(va_arg(args, char *), flags);
 	else if (format[*i] == 'p')
-		count += ft_print_hexx0(va_arg(args, size_t));
+		count += ft_print_pointer(va_arg(args, size_t), flags);		
+	else if (format[*i] == 'd' || format[*i] == 'i')
+		count += ft_print_decimal(va_arg(args, int), flags);
+	else if (format[*i] == 'u')
+		count += ft_print_unsigned(va_arg(args, unsigned int));		
+	else if (format[*i] == 'x')
+		count += ft_print_hex(va_arg(args, unsigned int), 16, 'x');
+	else if (format[*i] == 'X')
+		count += ft_print_hex(va_arg(args, unsigned int), 16, 'X');
 	else if (format[*i] == '%')
     {
-		count += ft_putchar('%');
+		count += ft_print_char('%', flags);
 		if (format[*i + 1] == '%' && format[*i + 2] == '\0')
             return(-1); 
 	}

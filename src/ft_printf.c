@@ -17,8 +17,12 @@ int	ft_printf(const char *format, ...)
 	unsigned int	i;
 	unsigned int	count;
 	va_list			args;
+	t_flags			*flags;
 
 	if (!format || (format[0] == '%' && format[1] == '\0'))
+		return (-1);
+	flags = ft_init_flags();
+	if(!flags)
 		return (-1);
 	va_start(args, format);
 	i = 0;
@@ -28,41 +32,15 @@ int	ft_printf(const char *format, ...)
 		if (format[i] == '%')
 		{
 			i++;
-			count += ft_format(format, &i, args);
+			if(ft_parse_flags(format, &i, flags) == -1)
+				count = -1;
+			else
+				count += ft_format(format, &i, args, flags);
 		}
 		else
 			count += ft_putchar(format[i++]);
 	}
 	va_end(args);
+	free(flags);
 	return (count);
 }
-/*
-int	main(void)
-{
-	char letter = 'H';
-	char *str = "sdhSUhdUSD";
-
-	ft_printf("[abcd]\n");
-	ft_printf("[%c]\n", letter);
-	ft_printf("[%s]\n", str);
-	ft_printf("[%%]\n");
-	ft_printf("[%d]\n", 42);
-	ft_printf("[%i]\n", 2147483649);
-}*/
-
-/*
-c = prints single caracter
-s = prints a string
-p = the void * point argument has to be printed in hexadecimal
-d = prints a decimal (base 10) number.
-i = prints a integer in base 10.
-u = prints an unsigned decimal base 10 number.
-x = prints a number in hexadecimal base 16 lower case format
-X = prints a number in hexadecimal base 16 uppercase format.
-% = prints a percent sign
-*/
-/*
-Manage any combination of the following flags: ’-0.’ and the field minimum width
-under all conversions
-Manage all the following flags: ’# +’ (Yes, one of them is a space)
-*/
