@@ -198,21 +198,6 @@ Formatted:       +42
 Hex with prefix: 0xff
 ```
 
-<div align="center">
-
-## 📋 Testing
-
-</div>
-
-The project includes a comprehensive test suite to verify all functionality:
-
-```bash
-python3 test_printf.py
-```
-
-This will run a series of tests comparing the output of ft_printf with the system's printf function.
-
-<div align="center">
 
 ---
 Made with ❤️ by [SirAlabar](https://github.com/SirAlabar)
