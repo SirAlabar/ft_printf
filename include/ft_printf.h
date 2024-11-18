@@ -6,7 +6,7 @@
 /*   By: hluiz-ma <hluiz-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 21:15:19 by hluiz-ma          #+#    #+#             */
-/*   Updated: 2024/11/18 21:10:27 by hluiz-ma         ###   ########.fr       */
+/*   Updated: 2024/11/18 21:44:20 by hluiz-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,6 @@ unsigned int	ft_print_hex(unsigned long nb, t_flags *flags, int is_recursive);
 int         ft_print_decimal(long n, t_flags *flags);
 int         ft_print_unsigned(unsigned int n);
 int         ft_print_pointer(size_t ptr, t_flags *flags);
+void        ft_put_width(int width, char c, unsigned int *count);
 
 #endif

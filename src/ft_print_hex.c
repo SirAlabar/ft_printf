@@ -6,7 +6,7 @@
 /*   By: hluiz-ma <hluiz-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 19:13:18 by hluiz-ma          #+#    #+#             */
-/*   Updated: 2024/11/18 21:10:23 by hluiz-ma         ###   ########.fr       */
+/*   Updated: 2024/11/18 21:35:27 by hluiz-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void ft_put_prefix(char flag, unsigned int *count)
         *count += ft_putstr("0x");
 }
 
-static void ft_put_width(int width, char c, unsigned int *count)
+void ft_put_width(int width, char c, unsigned int *count)
 {
     while (width > 0)
     {
