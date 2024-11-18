@@ -34,14 +34,9 @@ BONUS_DIR	= ./bonus
 # Source files
 SRCS		= $(SRC_DIR)/ft_printf.c \
 		  $(SRC_DIR)/ft_format.c \
-		  $(SRC_DIR)/ft_putchar.c \
-		  $(SRC_DIR)/ft_putstr.c
-
-# Bonus source files
-SRCS_BONUS	= $(BONUS_DIR)/ft_printf_bonus.c \
-		  $(BONUS_DIR)/ft_format_bonus.c \
-		  $(BONUS_DIR)/ft_putchar_bonus.c \
-		  $(BONUS_DIR)/ft_putstr_bonus.c
+		  $(SRC_DIR)/ft_format_handler.c \
+		  $(SRC_DIR)/ft_output.c \
+		  $(SRC_DIR)/ft_print_hex.c		  
 
 # Object files
 OBJS		= $(SRCS:.c=.o)

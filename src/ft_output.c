@@ -73,28 +73,16 @@ int ft_print_str(char *str, t_flags *flags)
 	return (count);
 }
 
-int ft_print_hex(unsigned int nb, char flag, t_flags *flags)
+int ft_print_unsigned(unsigned int n)
 {
-	unsigned int	count;
-	char			*symbols;
+    int count;
 
-	symbols = "0123456789abcdef";
-	if (flag == 'X')
-		symbols = "0123456789ABCDEF";
-	count = 0;
-	if (nb == 0)
-		return (write(1, "(nil)", 5));	
-	if (nb < 0)
-	{
-		count += ft_putchar('-');
-		return (ft_print_hex(-nb, flag, flags) + 1);
-	}
-	else if (nb < 16)
-		return (ft_putchar(symbols[nb]));
-	else
-	{
-		count += ft_print_hex(nb / 16, flag, flags);
-		return (count + ft_print_hex(nb % 16, flag, flags));
-	}
-	return (count);
+    count = 0;
+    if (n < 10)
+        return (ft_putchar(n + '0'));
+    else
+    {
+        count += ft_print_unsigned(n / 10);
+        return (count + ft_print_unsigned(n % 10));
+    }
 }

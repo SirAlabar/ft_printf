@@ -69,5 +69,5 @@ int ft_parse_flags(char *format, unsigned int *i, t_flags *flags)
         (*i)++;
     }
     flags->type = format[*i];
-    return (1)
+    return (1);
 }
