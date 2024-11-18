@@ -6,7 +6,7 @@
 /*   By: hluiz-ma <hluiz-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 21:15:19 by hluiz-ma          #+#    #+#             */
-/*   Updated: 2024/05/12 18:31:54 by hluiz-ma         ###   ########.fr       */
+/*   Updated: 2024/11/18 20:00:22 by hluiz-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ typedef struct s_flags
     int     type;
 }	t_flags;
 
-
 /*
 **                              FUNCTION PROTOTYPES
 */
@@ -49,7 +48,7 @@ int         ft_format(const char *format, unsigned int *i, va_list args, t_flags
 /* Format handling */
 t_flags     *ft_init_flags(void);
 void        ft_reset_flags(t_flags *flags);
-int         ft_parse_flags(char *format, unsigned int *i, t_flags *flags);
+int         ft_parse_flags(const char *format, unsigned int *i, t_flags *flags);
 int         ft_handle_width(int width, int minus, int has_zero);
 
 /* Output functions */
@@ -57,7 +56,7 @@ int         ft_putchar(char c);
 int         ft_putstr(const char *s);
 int         ft_print_char(char c, t_flags *flags);
 int         ft_print_str(char *str, t_flags *flags);
-int         ft_print_hex(unsigned int n, char flag, t_flags *flags);
+unsigned int	ft_print_hex(unsigned int nb, char flag, t_flags *flags);
 int         ft_print_decimal(long n, t_flags *flags);
 int         ft_print_unsigned(unsigned int n);
 int         ft_print_pointer(size_t ptr, t_flags *flags);

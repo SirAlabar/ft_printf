@@ -6,7 +6,7 @@
 /*   By: hluiz-ma <hluiz-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 20:21:27 by hluiz-ma          #+#    #+#             */
-/*   Updated: 2024/05/13 18:54:08 by hluiz-ma         ###   ########.fr       */
+/*   Updated: 2024/11/18 20:23:36 by hluiz-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,26 @@
 
 int ft_print_decimal(long n, t_flags *flags)
 {
-    int count;
+    int	count;
 
     count = 0;
     if (n < 0)
     {
         count += ft_putchar('-');
-        return (ft_print_decimal(-n, flags) + 1);
+        n = -n;
     }
-    else if (n >= 0 && flags->plus)
+    else if (flags->plus)
         count += ft_putchar('+');
-    else if (n >= 0 && flags->space)
+    else if (flags->space)
         count += ft_putchar(' ');
     if (n < 10)
-        return (count + ft_putchar(n + '0'));
+        count += ft_putchar(n + '0');
     else
     {
         count += ft_print_decimal(n / 10, flags);
-        return (count + ft_print_decimal(n % 10, flags));
+        count += ft_putchar((n % 10) + '0');
     }
+    return (count);
 }
 
 int ft_handle_width(int width, int minus, int has_zero)

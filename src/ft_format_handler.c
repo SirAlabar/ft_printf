@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_format.c                                        :+:      :+:    :+:   */
+/*   ft_format_handler.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hluiz-ma <hluiz-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 20:21:27 by hluiz-ma          #+#    #+#             */
-/*   Updated: 2024/11/13 18:54:08 by hluiz-ma         ###   ########.fr       */
+/*   Updated: 2024/11/18 19:14:37 by hluiz-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int ft_is_flag(char c)
             c == ' ' || c == '+' || ft_isdigit(c));
 }
 
-int ft_parse_flags(char *format, unsigned int *i, t_flags *flags)
+int ft_parse_flags(const char *format, unsigned int *i, t_flags *flags)
 {
     ft_reset_flags(flags);
     while(format[*i] && ft_is_flag(format[*i]))
