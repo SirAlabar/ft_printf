@@ -6,7 +6,7 @@
 /*   By: hluiz-ma <hluiz-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 20:21:27 by hluiz-ma          #+#    #+#             */
-/*   Updated: 2024/11/18 20:23:36 by hluiz-ma         ###   ########.fr       */
+/*   Updated: 2024/11/18 21:01:00 by hluiz-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,13 @@ int ft_handle_width(int width, int minus, int has_zero)
 
 int ft_print_pointer(size_t ptr, t_flags *flags)
 {
-    int     count;
+    int	count;
 
     count = 0;
     if (!ptr)
         return (ft_putstr("(nil)"));
     count += ft_putstr("0x");
-    count += ft_print_hex((unsigned int)ptr, 'x', flags);
+    count += ft_print_hex(ptr, flags);
     return (count);
 }
 
@@ -82,7 +82,7 @@ int ft_format(const char *format, unsigned int *i, va_list args, t_flags *flags)
     else if (format[*i] == 'u')
         count += ft_print_unsigned(va_arg(args, unsigned int));
     else if (format[*i] == 'x' || format[*i] == 'X')
-        count += ft_print_hex(va_arg(args, unsigned int), format[*i], flags);
+        count += ft_print_hex(va_arg(args, unsigned int), flags);
     else if (format[*i] == '%')
         count += ft_putchar('%');
     (*i)++;

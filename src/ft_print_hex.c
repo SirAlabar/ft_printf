@@ -6,7 +6,7 @@
 /*   By: hluiz-ma <hluiz-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 19:13:18 by hluiz-ma          #+#    #+#             */
-/*   Updated: 2024/11/18 20:23:46 by hluiz-ma         ###   ########.fr       */
+/*   Updated: 2024/11/18 21:02:31 by hluiz-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,35 +44,48 @@ static void ft_put_width(int width, char c, unsigned int *count)
     }
 }
 
-unsigned int	ft_print_hex(unsigned int nb, char flag, t_flags *flags)
+static void	ft_handle_hex_flags(unsigned long nb, int len, t_flags *flags, unsigned int *count)
 {
-   unsigned int	count;
-   char		*symbols;
-   int			len;
-   int			width;
+    int	width;
 
-   count = 0;
-   if (flag == 'X')
-       symbols = "0123456789ABCDEF";
-   else
-       symbols = "0123456789abcdef";
-   len = ft_hex_len(nb);
-   width = flags->width - len;
-   if (flags->hash && nb != 0)
-   {
-       width -= 2;
-       ft_put_prefix(flag, &count);
-   }
-   if (!flags->minus && width > 0)
-       ft_put_width(width, ' ', &count);
-   if (nb < 16)
-       count += ft_putchar(symbols[nb]);
-   else
-   {
-       count += ft_print_hex(nb / 16, flag, flags);
-       count += ft_print_hex(nb % 16, flag, flags);
-   }
-   if (flags->minus && width > 0)
-       ft_put_width(width, ' ', &count);
-   return (count);
+    width = flags->width - len;
+    if (!flags->minus && width > 0)
+    {
+        if (flags->zero && flags->precision == -1)
+            ft_put_width(width, '0', count);
+        else
+            ft_put_width(width, ' ', count);
+    }
+    if (flags->hash && nb != 0)
+    {
+        width -= 2;
+        ft_put_prefix(flags->type, count);
+    }
+    if (flags->precision > len)
+        ft_put_width(flags->precision - len, '0', count);
+}
+
+unsigned int	ft_print_hex(unsigned long nb, t_flags *flags)
+{
+    unsigned int	count;
+    char		*symbols;
+    int			len;
+
+    count = 0;
+    if (flags->type == 'X')
+        symbols = "0123456789ABCDEF";
+    else
+        symbols = "0123456789abcdef";
+    len = ft_hex_len(nb);
+    ft_handle_hex_flags(nb, len, flags, &count);
+    if (nb == 0 && flags->precision == 0)
+        return (count);
+    if (nb < 16)
+        count += ft_putchar(symbols[nb]);
+    else
+    {
+        count += ft_print_hex(nb / 16, flags);
+        count += ft_putchar(symbols[nb % 16]);
+    }
+    return (count);
 }

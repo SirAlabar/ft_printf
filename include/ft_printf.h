@@ -6,7 +6,7 @@
 /*   By: hluiz-ma <hluiz-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 21:15:19 by hluiz-ma          #+#    #+#             */
-/*   Updated: 2024/11/18 20:00:22 by hluiz-ma         ###   ########.fr       */
+/*   Updated: 2024/11/18 21:01:49 by hluiz-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,15 @@
 */
 typedef struct s_flags
 {
-    int     width;
-    int     precision;
-    int     minus;
-    int     zero;
-    int     hash;
-    int     space;
-    int     plus;
-    int     type;
-}	t_flags;
+   int width;      // Minimum field width - ex: %5d = "   42"
+   int precision;  // Precision after decimal - ex: %.5d = "00042"
+   int minus;      // Left-align output - ex: %-5d = "42   "
+   int zero;       // Pad with zeros (not spaces) - ex: %05d = "00042" 
+   int hash;       // Add "0x" or "0X" prefix for hex - ex: %#x = "0x2a"
+   int space;      // Add space before positive numbers - ex: % d = " 42"
+   int plus;       // Add plus before positive numbers - ex: %+d = "+42"
+   int type;       // Conversion type (c,s,p,d,i,u,x,X,%)
+} t_flags;
 
 /*
 **                              FUNCTION PROTOTYPES
@@ -56,7 +56,7 @@ int         ft_putchar(char c);
 int         ft_putstr(const char *s);
 int         ft_print_char(char c, t_flags *flags);
 int         ft_print_str(char *str, t_flags *flags);
-unsigned int	ft_print_hex(unsigned int nb, char flag, t_flags *flags);
+unsigned int	ft_print_hex(unsigned long nb, t_flags *flags);
 int         ft_print_decimal(long n, t_flags *flags);
 int         ft_print_unsigned(unsigned int n);
 int         ft_print_pointer(size_t ptr, t_flags *flags);

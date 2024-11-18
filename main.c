@@ -6,7 +6,7 @@
 /*   By: hluiz-ma <hluiz-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 21:13:58 by hluiz-ma          #+#    #+#             */
-/*   Updated: 2024/05/07 21:14:02 by hluiz-ma         ###   ########.fr       */
+/*   Updated: 2024/11/18 20:37:07 by hluiz-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -752,8 +752,8 @@ int main(void)
 
     /* Múltiplas precisões */
     ft_printf("\n---Testing multiple precisions---\n");
-    output_OG = printf("OG -> %.0d %.1d %.2d %.3d\n", 42, 42, 42, 42);
-    output_FT = ft_printf("FT -> %.0d %.1d %.2d %.3d\n", 42, 42, 42, 42);
+    output_OG = printf("OG -> %.0d %.1d %.2d %.3d %.4d %.5d\n", 42, 42, 42, 42, 42, 42);
+    output_FT = ft_printf("FT -> %.0d %.1d %.2d %.3d %.4d %.5d\n", 42, 42, 42, 42, 42 ,42);
     printf("OUTPUT OG = %d\n", output_OG);
     ft_printf("OUTPUT FT = %d\n", output_FT);
 
