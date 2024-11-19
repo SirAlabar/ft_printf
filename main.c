@@ -6,7 +6,7 @@
 /*   By: hluiz-ma <hluiz-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 21:13:58 by hluiz-ma          #+#    #+#             */
-/*   Updated: 2024/11/18 21:25:01 by hluiz-ma         ###   ########.fr       */
+/*   Updated: 2024/11/19 19:08:18 by hluiz-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -675,6 +675,12 @@ ft_printf("OUTPUT FT = %d\n", output_FT);
 ft_printf("\n---Testing + flag---\n");
 output_OG = printf("[OG -> %+d]\n", 42);
 output_FT = ft_printf("[FT -> %+d]\n", 42);
+printf("OUTPUT OG = %d\n", output_OG);
+ft_printf("OUTPUT FT = %d\n", output_FT);
+
+ft_printf("\n---Testing + flag---\n");
+output_OG = printf("[OG -> %+d]\n", 424242);
+output_FT = ft_printf("[FT -> %+d]\n", 424242);
 printf("OUTPUT OG = %d\n", output_OG);
 ft_printf("OUTPUT FT = %d\n", output_FT);
 

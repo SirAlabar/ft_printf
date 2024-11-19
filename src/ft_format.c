@@ -6,7 +6,7 @@
 /*   By: hluiz-ma <hluiz-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 20:21:27 by hluiz-ma          #+#    #+#             */
-/*   Updated: 2024/11/18 21:42:34 by hluiz-ma         ###   ########.fr       */
+/*   Updated: 2024/11/19 19:07:22 by hluiz-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,46 +39,53 @@ static void	ft_handle_dec_flags(long n, t_flags *flags, int has_sign, unsigned i
            ft_put_width(width, ' ', count);
    }
 }
-static int	ft_print_decimal_base(long n)
+static int	ft_print_decimal_base(long n, t_flags *flags, int is_recursive)
 {
-    unsigned int	count;
+   unsigned int	count;
 
-    count = 0;
-    if (n < 0)
-    {
-        count += ft_putchar('-');
-        n = -n;
-    }
-    if (n < 10)
-        count += ft_putchar(n + '0');
-    else
-    {
-        count += ft_print_decimal_base(n / 10);
-        count += ft_putchar((n % 10) + '0');
-    }
-    return (count);
+   count = 0;
+   if (!is_recursive)
+   {
+       if (n < 0)
+       {
+           count += ft_putchar('-');
+           n = -n;
+       }
+       else if (flags && flags->plus)
+           count += ft_putchar('+');
+       else if (flags && flags->space)
+           count += ft_putchar(' ');
+   }
+   if (n < 10)
+       count += ft_putchar(n + '0');
+   else
+   {
+       count += ft_print_decimal_base(n / 10, flags, 1);
+       count += ft_putchar((n % 10) + '0');
+   }
+   return (count);
 }
 
 int	ft_print_decimal(long n, t_flags *flags)
 {
-    unsigned int	count;
-    int	has_sign;
+   unsigned int	count;
+   int			has_sign;
 
-    count = 0;
-    has_sign = 0;
-    if (flags)
-    {
-        if (n < 0 || flags->plus || flags->space)
-            has_sign = 1;
-        if (!flags->minus)
-            ft_handle_dec_flags(n, flags, has_sign, &count);
-        count += ft_print_decimal_base(n);
-        if (flags->minus)
-            ft_handle_dec_flags(n, flags, has_sign, &count);
-    }
-    else
-        count += ft_print_decimal_base(n);
-    return ((int)count);
+   count = 0;
+   has_sign = 0;
+   if (flags)
+   {
+       if (n < 0 || flags->plus || flags->space)
+           has_sign = 1;
+       if (!flags->minus)
+           ft_handle_dec_flags(n, flags, has_sign, &count);
+       count += ft_print_decimal_base(n, flags, 0);
+       if (flags->minus)
+           ft_handle_dec_flags(n, flags, has_sign, &count);
+   }
+   else
+       count += ft_print_decimal_base(n, NULL, 0);
+   return (count);
 }
 
 int ft_print_pointer(size_t ptr, t_flags *flags)
