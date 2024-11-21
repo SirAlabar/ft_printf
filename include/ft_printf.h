@@ -61,5 +61,14 @@ int         ft_print_decimal(long n, t_flags *flags);
 int         ft_print_unsigned(unsigned int n);
 int         ft_print_pointer(size_t ptr, t_flags *flags);
 void        ft_put_width(int width, char c, unsigned int *count);
+int	ft_print_decimal_base(long n, t_flags *flags, int is_recursive);
+
+int ft_hex_len(unsigned int nb);
+void ft_put_prefix(char flag, unsigned int *count);
+int ft_print_left_hex(t_flags *flags, unsigned long number);
+int ft_print_left_dec(t_flags *flags, long number);
+int ft_print_sign(t_flags *flags, long number);
+int ft_decimal_len(long n);
+int ft_print_str_left(char *str, t_flags *flags);
 
 #endif

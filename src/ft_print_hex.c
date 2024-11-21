@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-static int ft_hex_len(unsigned int nb)
+int ft_hex_len(unsigned int nb)
 {
     int len;
 
@@ -27,7 +27,7 @@ static int ft_hex_len(unsigned int nb)
     return (len);
 }
 
-static void ft_put_prefix(char flag, unsigned int *count)
+void ft_put_prefix(char flag, unsigned int *count)
 {
     if (flag == 'X')
         *count += ft_putstr("0X");

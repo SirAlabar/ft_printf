@@ -39,7 +39,7 @@ static void	ft_handle_dec_flags(long n, t_flags *flags, int has_sign, unsigned i
            ft_put_width(width, ' ', count);
    }
 }
-static int	ft_print_decimal_base(long n, t_flags *flags, int is_recursive)
+int	ft_print_decimal_base(long n, t_flags *flags, int is_recursive)
 {
    unsigned int	count;
 
@@ -107,18 +107,31 @@ int ft_format(const char *format, unsigned int *i, va_list args, t_flags *flags)
     if (format[*i] == 'c')
         count += ft_print_char(va_arg(args, int), flags);
     else if (format[*i] == 's')
-        count += ft_print_str(va_arg(args, char *), flags);
+    {
+        if (flags->minus)
+            count += ft_print_str_left(va_arg(args, char *), flags);
+        else
+            count += ft_print_str(va_arg(args, char *), flags);
+    }
     else if (format[*i] == 'p')
         count += ft_print_pointer(va_arg(args, size_t), flags);
     else if (format[*i] == 'd' || format[*i] == 'i')
-        count += ft_print_decimal(va_arg(args, int), flags);
+    {
+        if (flags->minus)
+            count += ft_print_left_dec(flags, va_arg(args, int));
+        else
+            count += ft_print_decimal(va_arg(args, int), flags);
+    }
     else if (format[*i] == 'u')
         count += ft_print_unsigned(va_arg(args, unsigned int));
    else if (format[*i] == 'x' || format[*i] == 'X')
-   {
-       flags->type = format[*i];
-       count += ft_print_hex(va_arg(args, unsigned int), flags, 0);
-   }
+    {
+        flags->type = format[*i];
+        if (flags->minus)
+            count += ft_print_left_hex(flags, va_arg(args, unsigned int));
+        else
+            count += ft_print_hex(va_arg(args, unsigned int), flags, 0);
+    }
     else if (format[*i] == '%')
         count += ft_putchar('%');
     (*i)++;
