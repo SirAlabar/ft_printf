@@ -6,7 +6,7 @@
 /*   By: hluiz-ma <hluiz-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 21:15:19 by hluiz-ma          #+#    #+#             */
-/*   Updated: 2024/11/18 21:44:20 by hluiz-ma         ###   ########.fr       */
+/*   Updated: 2024/11/24 18:21:16 by hluiz-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	ft_print_decimal_base(long n, t_flags *flags, int is_recursive);
 
 int ft_hex_len(unsigned int nb);
 void ft_put_prefix(char flag, unsigned int *count);
-int ft_print_left_hex(t_flags *flags, unsigned long number);
+int ft_print_left_hex(t_flags *flags, unsigned int number);
 int ft_print_left_dec(t_flags *flags, long number);
 int ft_print_sign(t_flags *flags, long number);
 int ft_decimal_len(long n);

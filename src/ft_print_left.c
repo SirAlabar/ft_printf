@@ -6,7 +6,7 @@
 /*   By: hluiz-ma <hluiz-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 19:13:18 by hluiz-ma          #+#    #+#             */
-/*   Updated: 2024/11/18 21:35:27 by hluiz-ma         ###   ########.fr       */
+/*   Updated: 2024/11/24 18:21:03 by hluiz-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,69 +40,59 @@ int ft_decimal_len(long n)
 
 int ft_print_left_dec(t_flags *flags, long number)
 {
-    unsigned int count;
-    int width;
-    int len;
+    unsigned int    count;
+    int             len;
+    int             zeros;
+    int             spaces;
 
     count = 0;
     len = ft_decimal_len(number);
-    
     count += ft_print_sign(flags, number);
-    
     if (number < 0)
         number = -number;
-
-    if (flags->precision > len)
-    {
-        width = flags->precision - len;
-        ft_put_width(width, '0', &count);
-    }
-
+    zeros = (flags->precision > len) ? flags->precision - len : 0;
+    while (zeros-- > 0)
+        count += write(1, "0", 1);
     if (!(number == 0 && flags->precision == 0))
-        count += ft_print_decimal_base(number, flags, 0);
-
-    if (flags->width > (int)count)
-    {
-        width = flags->width - count;
-        ft_put_width(width, ' ', &count);
-    }
+        count += ft_print_decimal_base(number, NULL, 1);
+    spaces = flags->width - count;
+    while (spaces-- > 0)
+        count += write(1, " ", 1);
     return (count);
 }
 
-int ft_print_left_hex(t_flags *flags, unsigned long number)
+int ft_print_left_hex(t_flags *flags, unsigned int number)
 {
-    unsigned int count;
-    int len;
-    int width;
+    unsigned int    count;
+    unsigned int    len;
+    int             zeros;
+    int             spaces;
 
     count = 0;
     len = ft_hex_len(number);
-    
     if (flags->hash && number != 0)
-        ft_put_prefix(flags->type, &count);
-
-    if (flags->precision > len)
     {
-        width = flags->precision - len;
-        ft_put_width(width, '0', &count);
+        if (flags->type == 'X')
+            count += write(1, "0X", 2);
+        else
+            count += write(1, "0x", 2);
     }
-
+    zeros = (flags->precision > (int)len) ? flags->precision - len : 0;
+    while (zeros-- > 0)
+        count += write(1, "0", 1);
     if (!(number == 0 && flags->precision == 0))
         count += ft_print_hex(number, flags, 1);
-
-    if (flags->width > (int)count)
-    {
-        width = flags->width - count;
-        ft_put_width(width, ' ', &count);
-    }
+    spaces = flags->width - count;
+    while (spaces-- > 0)
+        count += write(1, " ", 1);
     return (count);
 }
 
 int ft_print_str_left(char *str, t_flags *flags)
 {
-    int count;
-    int len;
-    int width;
+    unsigned int    count;
+    int             len;
+    int             spaces;
 
     count = 0;
     if (!str)
@@ -110,15 +100,10 @@ int ft_print_str_left(char *str, t_flags *flags)
     len = ft_strlen(str);
     if (flags->precision >= 0 && flags->precision < len)
         len = flags->precision;
-        
     write(1, str, len);
     count += len;
-    
-    width = flags->width - len;
-    while (width > 0)
-    {
-        count += ft_putchar(' ');
-        width--;
-    }
+    spaces = flags->width - len;
+    while (spaces-- > 0)
+        count += write(1, " ", 1);
     return (count);
 }
