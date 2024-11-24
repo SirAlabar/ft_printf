@@ -6,7 +6,7 @@
 /*   By: hluiz-ma <hluiz-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 20:21:27 by hluiz-ma          #+#    #+#             */
-/*   Updated: 2024/11/19 19:07:22 by hluiz-ma         ###   ########.fr       */
+/*   Updated: 2024/11/24 20:34:16 by hluiz-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	ft_handle_dec_flags(long n, t_flags *flags, int has_sign, unsigned i
 }
 int	ft_print_decimal_base(long n, t_flags *flags, int is_recursive)
 {
-   unsigned int	count;
+   unsigned int count;
 
    count = 0;
    if (!is_recursive)

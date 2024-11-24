@@ -6,7 +6,7 @@
 /*   By: hluiz-ma <hluiz-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 20:21:27 by hluiz-ma          #+#    #+#             */
-/*   Updated: 2024/11/18 19:14:37 by hluiz-ma         ###   ########.fr       */
+/*   Updated: 2024/11/24 20:15:10 by hluiz-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,12 @@ int ft_parse_flags(const char *format, unsigned int *i, t_flags *flags)
             continue;
         }
         else if (ft_isdigit(format[*i]))
+        {
             flags->width = ft_atoi(format + *i);
+            while (ft_isdigit(format[*i]))
+                (*i)++;
+            continue;
+        }
         (*i)++;
     }
     flags->type = format[*i];

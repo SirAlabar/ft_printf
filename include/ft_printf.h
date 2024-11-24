@@ -6,7 +6,7 @@
 /*   By: hluiz-ma <hluiz-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 21:15:19 by hluiz-ma          #+#    #+#             */
-/*   Updated: 2024/11/24 18:21:16 by hluiz-ma         ###   ########.fr       */
+/*   Updated: 2024/11/24 20:18:41 by hluiz-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 */
 # include "../libft/libft.h"
 # include <stdarg.h> // library for args
+#include <stdio.h>
 /*
 **                              BOOLEAN
 */
@@ -70,5 +71,9 @@ int ft_print_left_dec(t_flags *flags, long number);
 int ft_print_sign(t_flags *flags, long number);
 int ft_decimal_len(long n);
 int ft_print_str_left(char *str, t_flags *flags);
+
+void    ft_put_precision_zeros(int len, unsigned int *count);
+void    ft_put_spaces(int len, unsigned int *count);
+int    ft_handle_zero_precision(t_flags *flags);
 
 #endif

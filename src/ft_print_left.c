@@ -6,7 +6,7 @@
 /*   By: hluiz-ma <hluiz-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 19:13:18 by hluiz-ma          #+#    #+#             */
-/*   Updated: 2024/11/24 18:21:03 by hluiz-ma         ###   ########.fr       */
+/*   Updated: 2024/11/24 20:29:05 by hluiz-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,37 +38,65 @@ int ft_decimal_len(long n)
     return (len);
 }
 
-int ft_print_left_dec(t_flags *flags, long number)
+int    ft_handle_zero_precision(t_flags *flags)
 {
     unsigned int    count;
-    int             len;
-    int             zeros;
-    int             spaces;
 
     count = 0;
-    len = ft_decimal_len(number);
-    count += ft_print_sign(flags, number);
-    if (number < 0)
-        number = -number;
-    zeros = (flags->precision > len) ? flags->precision - len : 0;
-    while (zeros-- > 0)
-        count += write(1, "0", 1);
-    if (!(number == 0 && flags->precision == 0))
-        count += ft_print_decimal_base(number, NULL, 1);
-    spaces = flags->width - count;
-    while (spaces-- > 0)
+    while (count < (unsigned int)flags->width)
         count += write(1, " ", 1);
     return (count);
 }
 
-int ft_print_left_hex(t_flags *flags, unsigned int number)
+void    ft_put_precision_zeros(int len, unsigned int *count)
+{
+    while (len-- > 0)
+        *count += write(1, "0", 1);
+}
+
+void    ft_put_spaces(int len, unsigned int *count)
+{
+    while (len-- > 0)
+        *count += write(1, " ", 1);
+}
+
+int    ft_print_left_dec(t_flags *flags, long number)
 {
     unsigned int    count;
-    unsigned int    len;
-    int             zeros;
-    int             spaces;
+    int             len;
+    int             pad_len;
+    int             has_sign;
 
     count = 0;
+    if (flags->precision == 0 && number == 0)
+        return (ft_handle_zero_precision(flags));
+    len = ft_decimal_len(number);
+    has_sign = (number < 0 || flags->plus || flags->space);
+    if (flags->precision > len)
+    {
+        if (has_sign)
+            count += ft_print_sign(flags, number);
+        if (number < 0)
+            number = -number;
+        pad_len = flags->precision - len;
+        ft_put_precision_zeros(pad_len, &count);
+        count += ft_print_decimal_base(number, NULL, 1);
+    }
+    else
+        count += ft_print_decimal_base(number, flags, 0);
+    ft_put_spaces(flags->width - count, &count);
+    return (count);
+}
+
+int    ft_print_left_hex(t_flags *flags, unsigned int number)
+{
+    unsigned int    count;
+    int             len;
+    int             pad_len;
+
+    count = 0;
+    if (flags->precision == 0 && number == 0)
+        return (ft_handle_zero_precision(flags));
     len = ft_hex_len(number);
     if (flags->hash && number != 0)
     {
@@ -77,22 +105,17 @@ int ft_print_left_hex(t_flags *flags, unsigned int number)
         else
             count += write(1, "0x", 2);
     }
-    zeros = (flags->precision > (int)len) ? flags->precision - len : 0;
-    while (zeros-- > 0)
-        count += write(1, "0", 1);
-    if (!(number == 0 && flags->precision == 0))
-        count += ft_print_hex(number, flags, 1);
-    spaces = flags->width - count;
-    while (spaces-- > 0)
-        count += write(1, " ", 1);
+    pad_len = flags->precision > len ? flags->precision - len : 0;
+    ft_put_precision_zeros(pad_len, &count);
+    count += ft_print_hex(number, flags, 1);
+    ft_put_spaces(flags->width - count, &count);
     return (count);
 }
 
-int ft_print_str_left(char *str, t_flags *flags)
+int    ft_print_str_left(char *str, t_flags *flags)
 {
     unsigned int    count;
     int             len;
-    int             spaces;
 
     count = 0;
     if (!str)
@@ -101,9 +124,7 @@ int ft_print_str_left(char *str, t_flags *flags)
     if (flags->precision >= 0 && flags->precision < len)
         len = flags->precision;
     write(1, str, len);
-    count += len;
-    spaces = flags->width - len;
-    while (spaces-- > 0)
-        count += write(1, " ", 1);
+    count = len;
+    ft_put_spaces(flags->width - count, &count);
     return (count);
 }
