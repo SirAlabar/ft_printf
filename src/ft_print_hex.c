@@ -27,50 +27,6 @@ int ft_hex_len(unsigned int nb)
     return (len);
 }
 
-void ft_put_prefix(char flag, unsigned int *count)
-{
-    if (flag == 'X')
-        *count += ft_putstr("0X");
-    else
-        *count += ft_putstr("0x");
-}
-
-void ft_put_width(int width, char c, unsigned int *count)
-{
-	while (width > 0)
-	{
-		*count += write(1, &c, 1);
-		width--;
-	}
-}
-
-static void	ft_handle_hex_flags(unsigned long nb, int len, t_flags *flags, unsigned int *count)
-{
-   int	width;
-   int	pad_len;
-
-   width = flags->width - len;
-   if (flags->hash && nb != 0)
-       width = width - 2;
-   pad_len = 0;
-   if (flags->precision > len)
-       pad_len = flags->precision - len;
-   if (!flags->minus)
-   {
-       if (flags->zero && flags->precision == -1)
-       {
-           if (flags->hash && nb != 0)
-               ft_put_prefix(flags->type, count);
-           ft_put_width(width - pad_len, '0', count);
-       }
-       else
-           ft_put_width(width - pad_len, ' ', count);
-   }
-   if (flags->hash && nb != 0 && !flags->zero)
-       ft_put_prefix(flags->type, count);
-   ft_put_width(pad_len, '0', count);
-}
-
 unsigned int	ft_print_hex(unsigned long nb, t_flags *flags, int is_recursive)
 {
    unsigned int	count;

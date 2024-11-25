@@ -12,17 +12,6 @@
 
 #include "ft_printf.h"
 
-int ft_print_sign(t_flags *flags, long number)
-{
-    if (number < 0)
-        return (ft_putchar('-'));
-    if (flags->plus)
-        return (ft_putchar('+'));
-    if (flags->space)
-        return (ft_putchar(' '));
-    return (0);
-}
-
 int ft_decimal_len(long n)
 {
     int len;
@@ -36,44 +25,6 @@ int ft_decimal_len(long n)
         len++;
     }
     return (len);
-}
-
-int	ft_handle_zero_precision(t_flags *flags)
-{
-	unsigned int	count;
-	int			i;
-
-	count = 0;
-	i = flags->width;
-	if (flags->plus)
-	{
-		i--;
-		if (i > 0)
-			count += ft_handle_width(i, 0, 0);
-		count += write(1, "+", 1);
-	}
-	else if (flags->space)
-	{
-		i--;
-		if (i > 0)
-			count += ft_handle_width(i, 0, 0);
-		count += write(1, " ", 1);
-	}
-	else
-		count += ft_handle_width(i, 0, 0);
-	return (count);
-}
-
-void    ft_put_precision_zeros(int len, unsigned int *count)
-{
-    while (len-- > 0)
-        *count += write(1, "0", 1);
-}
-
-void    ft_put_spaces(int len, unsigned int *count)
-{
-    while (len-- > 0)
-        *count += write(1, " ", 1);
 }
 
 int    ft_print_left_dec(t_flags *flags, long number)

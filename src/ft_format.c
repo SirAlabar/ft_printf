@@ -12,44 +12,6 @@
 
 #include "ft_printf.h"
 
-static void	ft_handle_dec_flags(long n, t_flags *flags, int has_sign,
-	unsigned int *count)
-{
-	int		width;
-	int		len;
-	char	pad;
-	long	num;
-
-	num = n;
-	if (n < 0)
-		num = -n;
-	len = ft_decimal_len(num);
-	if (flags->precision > len)
-	{
-		width = flags->width - (flags->precision + has_sign);
-		if (width > 0)
-			ft_put_width(width, ' ', count);
-		*count += ft_print_sign(flags, n);
-		ft_put_width(flags->precision - len, '0', count);
-	}
-	else if (flags->width > len + has_sign)
-	{
-		width = flags->width - (len + has_sign);
-		pad = ' ';
-		if (flags->zero && flags->precision == -1)
-		{
-			pad = '0';
-			*count += ft_print_sign(flags, n);
-		}
-		if (!flags->minus)
-			ft_put_width(width, pad, count);
-		if (pad == ' ')
-			*count += ft_print_sign(flags, n);
-	}
-	else
-		*count += ft_print_sign(flags, n);
-}
-
 int	ft_print_decimal_base(long n, t_flags *flags, int is_recursive)
 {
 	unsigned int	count;
@@ -114,6 +76,7 @@ int ft_print_pointer(size_t ptr, t_flags *flags)
    count += ft_print_hex(ptr, flags, 0);
    return (count);
 }
+
 int ft_format(const char *format, unsigned int *i, va_list args, t_flags *flags)
 {
     int     count;

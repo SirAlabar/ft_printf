@@ -35,7 +35,9 @@ BONUS_DIR	= ./bonus
 SRCS		= $(SRC_DIR)/ft_printf.c \
 		  $(SRC_DIR)/ft_format.c \
 		  $(SRC_DIR)/ft_format_handler.c \
+		  $(SRC_DIR)/ft_handler_flags.c \
 		  $(SRC_DIR)/ft_output.c \
+		  $(SRC_DIR)/ft_output_flags.c \
 		  $(SRC_DIR)/ft_print_left.c \
 		  $(SRC_DIR)/ft_print_hex.c		  
 

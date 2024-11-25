@@ -12,24 +12,6 @@
 
 #include "ft_printf.h"
 
-int ft_handle_width(int width, int minus, int has_zero)
-{
-   int     count;
-   char    c;
-
-   count = 0;
-   if (has_zero && !minus)
-       c = '0';
-   else
-       c = ' ';
-   while (width > 0)
-   {
-       count += write(1, &c, 1);
-       width--;
-   }
-   return (count);
-}
-
 int	ft_putstr(const char *s)
 {
 	unsigned int	i;
