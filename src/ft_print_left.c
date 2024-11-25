@@ -62,30 +62,32 @@ void    ft_put_spaces(int len, unsigned int *count)
 
 int    ft_print_left_dec(t_flags *flags, long number)
 {
-    unsigned int    count;
-    int             len;
-    int             pad_len;
-    int             has_sign;
+	unsigned int	count;
+	int		len;
+	int		pad_len;
 
-    count = 0;
-    if (flags->precision == 0 && number == 0)
-        return (ft_handle_zero_precision(flags));
-    len = ft_decimal_len(number);
-    has_sign = (number < 0 || flags->plus || flags->space);
-    if (flags->precision > len)
-    {
-        if (has_sign)
-            count += ft_print_sign(flags, number);
-        if (number < 0)
-            number = -number;
-        pad_len = flags->precision - len;
-        ft_put_precision_zeros(pad_len, &count);
-        count += ft_print_decimal_base(number, NULL, 1);
-    }
-    else
-        count += ft_print_decimal_base(number, flags, 0);
-    ft_put_spaces(flags->width - count, &count);
-    return (count);
+	count = 0;
+	if (flags->precision == 0 && number == 0)
+		return (ft_handle_zero_precision(flags));
+	len = ft_decimal_len(number);
+	if (flags->precision > len)
+	{
+		count += ft_print_sign(flags, number);
+		if (number < 0)
+			number = -number;
+		pad_len = flags->precision - len;
+		ft_put_precision_zeros(pad_len, &count);
+		count += ft_print_decimal_base(number, NULL, 1);
+	}
+	else
+	{
+		count += ft_print_sign(flags, number);
+		if (number < 0)
+			number = -number;
+		count += ft_print_decimal_base(number, NULL, 1);
+	}
+	ft_put_spaces(flags->width - count, &count);
+	return (count);
 }
 
 int    ft_print_left_hex(t_flags *flags, unsigned int number)
