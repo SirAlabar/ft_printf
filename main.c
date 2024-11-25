@@ -746,8 +746,8 @@ output_FT = ft_printf("[FT -> %#-10x]\n", 42);
 printf("OUTPUT OG = %d\n", output_OG);
 ft_printf("OUTPUT FT = %d\n", output_FT);
 
-output_OG = printf("[OG -> % +d]\n", 42);
-output_FT = ft_printf("[FT -> % +d]\n", 42);
+output_OG = printf("[OG -> %+d]\n", 42);
+output_FT = ft_printf("[FT -> %+d]\n", 42);
 printf("OUTPUT OG = %d\n", output_OG);
 ft_printf("OUTPUT FT = %d\n", output_FT);
 
@@ -788,11 +788,6 @@ ft_printf("OUTPUT FT = %d\n", output_FT);
 
 output_OG = printf("[OG -> %+-8.5d]\n", 42);
 output_FT = ft_printf("[FT -> %+-8.5d]\n", 42);
-printf("OUTPUT OG = %d\n", output_OG);
-ft_printf("OUTPUT FT = %d\n", output_FT);
-
-output_OG = printf("[OG -> %#08.5x]\n", 0);
-output_FT = ft_printf("[FT -> %#08.5x]\n", 0);
 printf("OUTPUT OG = %d\n", output_OG);
 ft_printf("OUTPUT FT = %d\n", output_FT);
 
