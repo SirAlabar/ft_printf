@@ -11,94 +11,271 @@
 /* ************************************************************************** */
 
 
+
 #include "include/ft_printf.h"
 #include <stdio.h>
 #include <limits.h>
 
 int main(void)
 {
-    int og;
-    int ft;
+    int output_OG;
+    int output_FT;
 
-    /* Complex combinations */
-    printf("\n=== Complex Flag Combinations ===\n");
-    og = printf("[%+10.5d]", 42);
-    ft = ft_printf("[%+10.5d]", 42);
-    printf(" OG: %d | FT: %d\n", og, ft);
+/////////////////////////////////
+//  PRECISION WITH ZERO CASES   //
+/////////////////////////////////
+    ft_printf("----------------PRECISION ZERO TESTS---------------\n");
+    output_OG = printf("OG -> [%.0d]\n", 0);
+    output_FT = ft_printf("FT -> [%.0d]\n", 0);
+    printf("OUTPUT OG = %d\n", output_OG);
+    ft_printf("OUTPUT FT = %d\n", output_FT);
 
-    og = printf("[%+10.5d]", -42);
-    ft = ft_printf("[%+10.5d]", -42);
-    printf(" OG: %d | FT: %d\n", og, ft);
+    ft_printf("\n");
 
-    /* Width + precision + flags */
-    printf("\n=== Width + Precision + Flags ===\n");
-    og = printf("[%#-15.10x]", 12345);
-    ft = ft_printf("[%#-15.10x]", 12345);
-    printf(" OG: %d | FT: %d\n", og, ft);
+    output_OG = printf("OG -> [%.0d]\n", 42);
+    output_FT = ft_printf("FT -> [%.0d]\n", 42);
+    printf("OUTPUT OG = %d\n", output_OG);
+    ft_printf("OUTPUT FT = %d\n", output_FT);
 
-    og = printf("[%.10d]", -12345);
-    ft = ft_printf("[%.10d]", -12345);
-    printf(" OG: %d | FT: %d\n", og, ft);
+/////////////////////////////////
+//  WIDTH WITH PRECISION ZERO   //
+/////////////////////////////////
+    ft_printf("----------------WIDTH WITH PRECISION ZERO---------------\n");
+    output_OG = printf("OG -> [%5.0d]\n", 0);
+    output_FT = ft_printf("FT -> [%5.0d]\n", 0);
+    printf("OUTPUT OG = %d\n", output_OG);
+    ft_printf("OUTPUT FT = %d\n", output_FT);
 
-    /* Edge cases */
-    printf("\n=== Edge Cases ===\n");
-    og = printf("[%+.d]", 0);
-    ft = ft_printf("[%+.d]", 0);
-    printf(" OG: %d | FT: %d\n", og, ft);
+    ft_printf("\n");
 
-    og = printf("[%#.x]", 0);
-    ft = ft_printf("[%#.x]", 0);
-    printf(" OG: %d | FT: %d\n", og, ft);
+    output_OG = printf("OG -> [%5.0d]\n", 42);
+    output_FT = ft_printf("FT -> [%5.0d]\n", 42);
+    printf("OUTPUT OG = %d\n", output_OG);
+    ft_printf("OUTPUT FT = %d\n", output_FT);
 
-    /* INT_MIN/MAX tests */
-    printf("\n=== INT_MIN/MAX with Flags ===\n");
-    og = printf("[%+15.10d]", INT_MIN);
-    ft = ft_printf("[%+15.10d]", INT_MIN);
-    printf(" OG: %d | FT: %d\n", og, ft);
+/////////////////////////////////
+//  PLUS WITH PRECISION ZERO    //
+/////////////////////////////////
+    ft_printf("----------------PLUS WITH PRECISION ZERO---------------\n");
+    output_OG = printf("OG -> [%+.0d]\n", 0);
+    output_FT = ft_printf("FT -> [%+.0d]\n", 0);
+    printf("OUTPUT OG = %d\n", output_OG);
+    ft_printf("OUTPUT FT = %d\n", output_FT);
 
-    og = printf("[%15.10d]", INT_MAX);
-    ft = ft_printf("[%15.10d]", INT_MAX);
-    printf(" OG: %d | FT: %d\n", og, ft);
+    ft_printf("\n");
 
-    /* Mixed precision tests */
-    printf("\n=== Mixed Precision Tests ===\n");
-    og = printf("[%8.3d|%.0d|%5.d|%.d]", 42, 42, 42, 42);
-    ft = ft_printf("[%8.3d|%.0d|%5.d|%.d]", 42, 42, 42, 42);
-    printf(" OG: %d | FT: %d\n", og, ft);
+    output_OG = printf("OG -> [%+.0d]\n", 42);
+    output_FT = ft_printf("FT -> [%+.0d]\n", 42);
+    printf("OUTPUT OG = %d\n", output_OG);
+    ft_printf("OUTPUT FT = %d\n", output_FT);
 
-    og = printf("[%8.3d|%.0d|%5.d|%.d]", 0, 0, 0, 0);
-    ft = ft_printf("[%8.3d|%.0d|%5.d|%.d]", 0, 0, 0, 0);
-    printf(" OG: %d | FT: %d\n", og, ft);
+/////////////////////////////////
+//  HASH WITH PRECISION ZERO    //
+/////////////////////////////////
+    ft_printf("----------------HASH WITH PRECISION ZERO---------------\n");
+    output_OG = printf("OG -> [%#.0x]\n", 0);
+    output_FT = ft_printf("FT -> [%#.0x]\n", 0);
+    printf("OUTPUT OG = %d\n", output_OG);
+    ft_printf("OUTPUT FT = %d\n", output_FT);
 
-    /* String precision and width */
-    printf("\n=== String Tests ===\n");
-    og = printf("[%15.10s]", "Hello World!");
-    ft = ft_printf("[%15.10s]", "Hello World!");
-    printf(" OG: %d | FT: %d\n", og, ft);
+    ft_printf("\n");
 
-    og = printf("[%-15.10s]", "Hello World!");
-    ft = ft_printf("[%-15.10s]", "Hello World!");
-    printf(" OG: %d | FT: %d\n", og, ft);
+    output_OG = printf("OG -> [%#.0x]\n", 42);
+    output_FT = ft_printf("FT -> [%#.0x]\n", 42);
+    printf("OUTPUT OG = %d\n", output_OG);
+    ft_printf("OUTPUT FT = %d\n", output_FT);
 
-    /* Hex special cases */
-    printf("\n=== Hex Special Cases ===\n");
-    og = printf("[%#-15.10x]", 0);
-    ft = ft_printf("[%#-15.10x]", 0);
-    printf(" OG: %d | FT: %d\n", og, ft);
+/////////////////////////////////
+//  SPACE WITH PRECISION ZERO   //
+/////////////////////////////////
+    ft_printf("----------------SPACE WITH PRECISION ZERO---------------\n");
+    output_OG = printf("OG -> [% .0d]\n", 0);
+    output_FT = ft_printf("FT -> [% .0d]\n", 0);
+    printf("OUTPUT OG = %d\n", output_OG);
+    ft_printf("OUTPUT FT = %d\n", output_FT);
 
-    og = printf("[%#15X]", INT_MIN);
-    ft = ft_printf("[%#15X]", INT_MIN);
-    printf(" OG: %d | FT: %d\n", og, ft);
+    ft_printf("\n");
 
-    /* Flag precedence tests */
-    printf("\n=== Flag Precedence ===\n");
-    og = printf("[%+d|%+d]", 42, 42);
-    ft = ft_printf("[%+d|%+d]", 42, 42);
-    printf(" OG: %d | FT: %d\n", og, ft);
+    output_OG = printf("OG -> [% .0d]\n", 42);
+    output_FT = ft_printf("FT -> [% .0d]\n", 42);
+    printf("OUTPUT OG = %d\n", output_OG);
+    ft_printf("OUTPUT FT = %d\n", output_FT);
 
-    og = printf("[%.3d|%.5d]", 42, 42);
-    ft = ft_printf("[%.3d|%.5d]", 42, 42);
-    printf(" OG: %d | FT: %d\n", og, ft);
+/////////////////////////////////
+//     MIXED COMBINATIONS      //
+/////////////////////////////////
+    ft_printf("----------------MIXED COMBINATIONS---------------\n");
+    output_OG = printf("OG -> [%+5.0d]\n", 0);
+    output_FT = ft_printf("FT -> [%+5.0d]\n", 0);
+    printf("OUTPUT OG = %d\n", output_OG);
+    ft_printf("OUTPUT FT = %d\n", output_FT);
+
+    ft_printf("\n");
+
+    output_OG = printf("OG -> [% 5.0d]\n", 42);
+    output_FT = ft_printf("FT -> [% 5.0d]\n", 42);
+    printf("OUTPUT OG = %d\n", output_OG);
+    ft_printf("OUTPUT FT = %d\n", output_FT);
+
+/////////////////////////////////
+//     EXTREME CASES           //
+/////////////////////////////////
+    ft_printf("----------------EXTREME CASES---------------\n");
+    output_OG = printf("OG -> [%+20.15d]\n", INT_MAX);
+    output_FT = ft_printf("FT -> [%+20.15d]\n", INT_MAX);
+    printf("OUTPUT OG = %d\n", output_OG);
+    ft_printf("OUTPUT FT = %d\n", output_FT);
+
+    ft_printf("\n");
+
+    output_OG = printf("OG -> [%+20.15d]\n", INT_MIN);
+    output_FT = ft_printf("FT -> [%+20.15d]\n", INT_MIN);
+    printf("OUTPUT OG = %d\n", output_OG);
+    ft_printf("OUTPUT FT = %d\n", output_FT);
+
+/////////////////////////////////
+//     STRING PRECISION        //
+/////////////////////////////////
+    ft_printf("----------------STRING PRECISION---------------\n");
+    output_OG = printf("OG -> [%20.5s]\n", "Hello World");
+    output_FT = ft_printf("FT -> [%20.5s]\n", "Hello World");
+    printf("OUTPUT OG = %d\n", output_OG);
+    ft_printf("OUTPUT FT = %d\n", output_FT);
+
+    ft_printf("\n");
+
+    output_OG = printf("OG -> [%-20.5s]\n", "Hello World");
+    output_FT = ft_printf("FT -> [%-20.5s]\n", "Hello World");
+    printf("OUTPUT OG = %d\n", output_OG);
+    ft_printf("OUTPUT FT = %d\n", output_FT);
+
+/////////////////////////////////
+//     MIXED ALL FLAGS         //
+/////////////////////////////////
+    ft_printf("----------------MIXED ALL FLAGS---------------\n");
+    output_OG = printf("OG -> [%+-20.10d]\n", 42);
+    output_FT = ft_printf("FT -> [%+-20.10d]\n", 42);
+    printf("OUTPUT OG = %d\n", output_OG);
+    ft_printf("OUTPUT FT = %d\n", output_FT);
+
+    ft_printf("\n");
+
+    output_OG = printf("OG -> [%#-20.10x]\n", 42);
+    output_FT = ft_printf("FT -> [%#-20.10x]\n", 42);
+    printf("OUTPUT OG = %d\n", output_OG);
+    ft_printf("OUTPUT FT = %d\n", output_FT);
+
+    /////////////////////////////////
+//     PRECISION AND WIDTH     //
+/////////////////////////////////
+    ft_printf("----------------PRECISION AND WIDTH---------------\n");
+    output_OG = printf("OG -> [%25.10d]\n", 123456);
+    output_FT = ft_printf("FT -> [%25.10d]\n", 123456);
+    printf("OUTPUT OG = %d\n", output_OG);
+    ft_printf("OUTPUT FT = %d\n", output_FT);
+
+    ft_printf("\n");
+
+    output_OG = printf("OG -> [%10.15d]\n", -987654);
+    output_FT = ft_printf("FT -> [%10.15d]\n", -987654);
+    printf("OUTPUT OG = %d\n", output_OG);
+    ft_printf("OUTPUT FT = %d\n", output_FT);
+
+/////////////////////////////////
+//     ZERO FLAG TESTS         //
+/////////////////////////////////
+    ft_printf("----------------ZERO FLAG TESTS---------------\n");
+    output_OG = printf("OG -> [%030d]\n", -789123);
+    output_FT = ft_printf("FT -> [%030d]\n", -789123);
+    printf("OUTPUT OG = %d\n", output_OG);
+    ft_printf("OUTPUT FT = %d\n", output_FT);
+
+    ft_printf("\n");
+
+    output_OG = printf("OG -> [%20d]\n", 456789);
+    output_FT = ft_printf("FT -> [%20d]\n", 456789);
+    printf("OUTPUT OG = %d\n", output_OG);
+    ft_printf("OUTPUT FT = %d\n", output_FT);
+
+/////////////////////////////////
+//     HEX SPECIAL CASES      //
+/////////////////////////////////
+    ft_printf("----------------HEX SPECIAL CASES---------------\n");
+    output_OG = printf("OG -> [%#15x]\n", 52845);
+    output_FT = ft_printf("FT -> [%#15x]\n", 52845);
+    printf("OUTPUT OG = %d\n", output_OG);
+    ft_printf("OUTPUT FT = %d\n", output_FT);
+
+    ft_printf("\n");
+
+    output_OG = printf("OG -> [%#15X]\n", 998244353);
+    output_FT = ft_printf("FT -> [%#15X]\n", 998244353);
+    printf("OUTPUT OG = %d\n", output_OG);
+    ft_printf("OUTPUT FT = %d\n", output_FT);
+
+/////////////////////////////////
+//     SIGN HANDLING          //
+/////////////////////////////////
+    ft_printf("----------------SIGN HANDLING---------------\n");
+    output_OG = printf("OG -> [%+15d]\n", 9876543);
+    output_FT = ft_printf("FT -> [%+15d]\n", 9876543);
+    printf("OUTPUT OG = %d\n", output_OG);
+    ft_printf("OUTPUT FT = %d\n", output_FT);
+
+    ft_printf("\n");
+
+    output_OG = printf("OG -> [% 15d]\n", -424242);
+    output_FT = ft_printf("FT -> [% 15d]\n", -424242);
+    printf("OUTPUT OG = %d\n", output_OG);
+    ft_printf("OUTPUT FT = %d\n", output_FT);
+
+/////////////////////////////////
+//     STRING EDGE CASES      //
+/////////////////////////////////
+    ft_printf("----------------STRING EDGE CASES---------------\n");
+    output_OG = printf("OG -> [%15.5s]\n", "Testing 123!");
+    output_FT = ft_printf("FT -> [%15.5s]\n", "Testing 123!");
+    printf("OUTPUT OG = %d\n", output_OG);
+    ft_printf("OUTPUT FT = %d\n", output_FT);
+
+    ft_printf("\n");
+
+    output_OG = printf("OG -> [%-15s]\n", "Hello, World 42!");
+    output_FT = ft_printf("FT -> [%-15s]\n", "Hello, World 42!");
+    printf("OUTPUT OG = %d\n", output_OG);
+    ft_printf("OUTPUT FT = %d\n", output_FT);
+
+/////////////////////////////////
+//     MIXED WIDTH TESTS      //
+/////////////////////////////////
+    ft_printf("----------------MIXED WIDTH TESTS---------------\n");
+    output_OG = printf("OG -> [%+15d|%-15d]\n", 123987, 456654);
+    output_FT = ft_printf("FT -> [%+15d|%-15d]\n", 123987, 456654);
+    printf("OUTPUT OG = %d\n", output_OG);
+    ft_printf("OUTPUT FT = %d\n", output_FT);
+
+    ft_printf("\n");
+
+    output_OG = printf("OG -> [%15.10d|%15d]\n", -789456, -321987);
+    output_FT = ft_printf("FT -> [%15.10d|%15d]\n", -789456, -321987);
+    printf("OUTPUT OG = %d\n", output_OG);
+    ft_printf("OUTPUT FT = %d\n", output_FT);
+
+/////////////////////////////////
+//     PRECISION EDGE CASES   //
+/////////////////////////////////
+    ft_printf("----------------PRECISION EDGE CASES---------------\n");
+    output_OG = printf("OG -> [%.0d|%.d]\n", 789456, 123789);
+    output_FT = ft_printf("FT -> [%.0d|%.d]\n", 789456, 123789);
+    printf("OUTPUT OG = %d\n", output_OG);
+    ft_printf("OUTPUT FT = %d\n", output_FT);
+
+    ft_printf("\n");
+
+    output_OG = printf("OG -> [%.15d|%.0d]\n", 987654321, 123456789);
+    output_FT = ft_printf("FT -> [%.15d|%.0d]\n", 987654321, 123456789);
+    printf("OUTPUT OG = %d\n", output_OG);
+    ft_printf("OUTPUT FT = %d\n", output_FT);
 
     return (0);
 }
