@@ -12,58 +12,62 @@
 
 #include "ft_printf.h"
 
-static void	ft_handle_dec_flags(long n, t_flags *flags, int has_sign, unsigned int *count)
+static void	ft_handle_dec_flags(long n, t_flags *flags, int has_sign,
+	unsigned int *count)
 {
-   int	width;
-   int	len;
+	int		width;
+	int		len;
+	char	pad;
 
-   len = 1;
-   while (n >= 10)
-   {
-       n /= 10;
-       len++;
-   }
-   if (flags->precision > len)
-   {
-       width = flags->precision - len;
-       ft_put_width(width, '0', count);
-   }
-   else if (flags->width > len + has_sign)
-   {
-       width = flags->width - (len + has_sign);
-       if (flags->minus)
-           ft_put_width(width, ' ', count);
-       else if (flags->zero && flags->precision == -1)
-           ft_put_width(width, '0', count);
-       else
-           ft_put_width(width, ' ', count);
-   }
+	len = 1;
+	while (n >= 10)
+	{
+		n /= 10;
+		len++;
+	}
+	if (flags->precision > len)
+	{
+		*count += ft_print_sign(flags, n);
+		ft_put_width(flags->precision - len, '0', count);
+	}
+	else if (flags->width > len + has_sign)
+	{
+		width = flags->width - (len + has_sign);
+		if (!flags->minus && flags->zero && flags->precision == -1)
+			*count += ft_print_sign(flags, n);
+		pad = ' ';
+		if (flags->zero && flags->precision == -1)
+			pad = '0';
+		if (!flags->minus)
+			ft_put_width(width, pad, count);
+		if (!flags->zero || flags->precision != -1)
+			*count += ft_print_sign(flags, n);
+	}
+	else
+		*count += ft_print_sign(flags, n);
 }
+
 int	ft_print_decimal_base(long n, t_flags *flags, int is_recursive)
 {
-   unsigned int count;
+	unsigned int	count;
 
-   count = 0;
-   if (!is_recursive)
-   {
-       if (n < 0)
-       {
-           count += ft_putchar('-');
-           n = -n;
-       }
-       else if (flags && flags->plus)
-           count += ft_putchar('+');
-       else if (flags && flags->space)
-           count += ft_putchar(' ');
-   }
-   if (n < 10)
-       count += ft_putchar(n + '0');
-   else
-   {
-       count += ft_print_decimal_base(n / 10, flags, 1);
-       count += ft_putchar((n % 10) + '0');
-   }
-   return (count);
+	count = 0;
+	if (n < 0)
+	{
+		if (!is_recursive)
+			count += ft_putchar('-');
+		n = -n;
+	}
+	if (n == 0 && flags && flags->precision == 0)
+		return (count);
+	if (n < 10)
+		count += ft_putchar(n + '0');
+	else
+	{
+		count += ft_print_decimal_base(n / 10, flags, 1);
+		count += ft_putchar((n % 10) + '0');
+	}
+	return (count);
 }
 
 int	ft_print_decimal(long n, t_flags *flags)
