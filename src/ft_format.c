@@ -21,25 +21,29 @@ static void	ft_handle_dec_flags(long n, t_flags *flags, int has_sign,
 	long	num;
 
 	num = n;
-	if (num < 0)
-		num = -num;
+	if (n < 0)
+		num = -n;
 	len = ft_decimal_len(num);
 	if (flags->precision > len)
 	{
+		width = flags->width - (flags->precision + has_sign);
+		if (width > 0)
+			ft_put_width(width, ' ', count);
 		*count += ft_print_sign(flags, n);
 		ft_put_width(flags->precision - len, '0', count);
 	}
 	else if (flags->width > len + has_sign)
 	{
 		width = flags->width - (len + has_sign);
-		if (!flags->minus && flags->zero && flags->precision == -1)
-			*count += ft_print_sign(flags, n);
 		pad = ' ';
 		if (flags->zero && flags->precision == -1)
+		{
 			pad = '0';
+			*count += ft_print_sign(flags, n);
+		}
 		if (!flags->minus)
 			ft_put_width(width, pad, count);
-		if (!flags->zero || flags->precision != -1)
+		if (pad == ' ')
 			*count += ft_print_sign(flags, n);
 	}
 	else
@@ -83,20 +87,19 @@ int	ft_print_decimal(long n, t_flags *flags)
 
 	count = 0;
 	has_sign = 0;
-	if (flags)
-	{
-		if (n < 0 || flags->plus || flags->space)
-			has_sign = 1;
-		if (!flags->minus)
-			ft_handle_dec_flags(n, flags, has_sign, &count);
-		if (n == 0 && flags->precision == 0)
-			return (count);
-		count += ft_print_decimal_base(n, flags, 0);
-		if (flags->minus)
-			ft_handle_dec_flags(n, flags, has_sign, &count);
-	}
-	else
-		count += ft_print_decimal_base(n, NULL, 0);
+	if (n < 0 || flags->plus || flags->space)
+		has_sign = 1;
+	if (!flags)
+		return (ft_print_decimal_base(n, NULL, 0));
+	if (flags->precision == 0 && n == 0)
+		return (ft_handle_zero_precision(flags));
+	if (!flags->minus)
+		ft_handle_dec_flags(n, flags, has_sign, &count);
+	if (n < 0 && flags->zero && flags->precision == -1 && !flags->minus)
+		n = -n;
+	count += ft_print_decimal_base(n, flags, 0);
+	if (flags->minus && flags->width > (int)count)
+		ft_put_spaces(flags->width - count, &count);
 	return (count);
 }
 

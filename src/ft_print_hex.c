@@ -37,11 +37,11 @@ void ft_put_prefix(char flag, unsigned int *count)
 
 void ft_put_width(int width, char c, unsigned int *count)
 {
-    while (width > 0)
-    {
-        *count += ft_putchar(c);
-        width--;
-    }
+	while (width > 0)
+	{
+		*count += write(1, &c, 1);
+		width--;
+	}
 }
 
 static void	ft_handle_hex_flags(unsigned long nb, int len, t_flags *flags, unsigned int *count)

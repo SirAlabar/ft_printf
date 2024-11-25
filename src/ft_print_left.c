@@ -38,14 +38,30 @@ int ft_decimal_len(long n)
     return (len);
 }
 
-int    ft_handle_zero_precision(t_flags *flags)
+int	ft_handle_zero_precision(t_flags *flags)
 {
-    unsigned int    count;
+	unsigned int	count;
+	int			i;
 
-    count = 0;
-    while (count < (unsigned int)flags->width)
-        count += write(1, " ", 1);
-    return (count);
+	count = 0;
+	i = flags->width;
+	if (flags->plus)
+	{
+		i--;
+		if (i > 0)
+			count += ft_handle_width(i, 0, 0);
+		count += write(1, "+", 1);
+	}
+	else if (flags->space)
+	{
+		i--;
+		if (i > 0)
+			count += ft_handle_width(i, 0, 0);
+		count += write(1, " ", 1);
+	}
+	else
+		count += ft_handle_width(i, 0, 0);
+	return (count);
 }
 
 void    ft_put_precision_zeros(int len, unsigned int *count)
@@ -63,13 +79,16 @@ void    ft_put_spaces(int len, unsigned int *count)
 int    ft_print_left_dec(t_flags *flags, long number)
 {
 	unsigned int	count;
-	int		len;
-	int		pad_len;
+	int			len;
+	int			pad_len;
 
 	count = 0;
 	if (flags->precision == 0 && number == 0)
 		return (ft_handle_zero_precision(flags));
-	len = ft_decimal_len(number);
+	if (number < 0)
+		len = ft_decimal_len(-number);
+	else
+		len = ft_decimal_len(number);
 	if (flags->precision > len)
 	{
 		count += ft_print_sign(flags, number);
@@ -86,7 +105,8 @@ int    ft_print_left_dec(t_flags *flags, long number)
 			number = -number;
 		count += ft_print_decimal_base(number, NULL, 1);
 	}
-	ft_put_spaces(flags->width - count, &count);
+	if (flags->width > (int)count)
+		ft_put_spaces(flags->width - count, &count);
 	return (count);
 }
 
