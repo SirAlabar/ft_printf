@@ -18,13 +18,12 @@ static void	ft_handle_dec_flags(long n, t_flags *flags, int has_sign,
 	int		width;
 	int		len;
 	char	pad;
+	long	num;
 
-	len = 1;
-	while (n >= 10)
-	{
-		n /= 10;
-		len++;
-	}
+	num = n;
+	if (num < 0)
+		num = -num;
+	len = ft_decimal_len(num);
 	if (flags->precision > len)
 	{
 		*count += ft_print_sign(flags, n);
@@ -52,14 +51,21 @@ int	ft_print_decimal_base(long n, t_flags *flags, int is_recursive)
 	unsigned int	count;
 
 	count = 0;
-	if (n < 0)
-	{
-		if (!is_recursive)
-			count += ft_putchar('-');
-		n = -n;
-	}
 	if (n == 0 && flags && flags->precision == 0)
 		return (count);
+	if (n == -2147483648)
+	{
+		if (!is_recursive)
+		{
+			//count += ft_putchar('-');
+			n = -(n + 1);
+			count += ft_print_decimal_base(n / 10, flags, 1);
+			count += ft_putchar('8');
+			return (count);
+		}
+	}
+	else if (n < 0 && !is_recursive)
+		n = -n;
 	if (n < 10)
 		count += ft_putchar(n + '0');
 	else
@@ -72,24 +78,26 @@ int	ft_print_decimal_base(long n, t_flags *flags, int is_recursive)
 
 int	ft_print_decimal(long n, t_flags *flags)
 {
-   unsigned int	count;
-   int			has_sign;
+	unsigned int	count;
+	int			has_sign;
 
-   count = 0;
-   has_sign = 0;
-   if (flags)
-   {
-       if (n < 0 || flags->plus || flags->space)
-           has_sign = 1;
-       if (!flags->minus)
-           ft_handle_dec_flags(n, flags, has_sign, &count);
-       count += ft_print_decimal_base(n, flags, 0);
-       if (flags->minus)
-           ft_handle_dec_flags(n, flags, has_sign, &count);
-   }
-   else
-       count += ft_print_decimal_base(n, NULL, 0);
-   return (count);
+	count = 0;
+	has_sign = 0;
+	if (flags)
+	{
+		if (n < 0 || flags->plus || flags->space)
+			has_sign = 1;
+		if (!flags->minus)
+			ft_handle_dec_flags(n, flags, has_sign, &count);
+		if (n == 0 && flags->precision == 0)
+			return (count);
+		count += ft_print_decimal_base(n, flags, 0);
+		if (flags->minus)
+			ft_handle_dec_flags(n, flags, has_sign, &count);
+	}
+	else
+		count += ft_print_decimal_base(n, NULL, 0);
+	return (count);
 }
 
 int ft_print_pointer(size_t ptr, t_flags *flags)

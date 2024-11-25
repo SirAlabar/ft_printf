@@ -75,5 +75,6 @@ int ft_print_str_left(char *str, t_flags *flags);
 void    ft_put_precision_zeros(int len, unsigned int *count);
 void    ft_put_spaces(int len, unsigned int *count);
 int    ft_handle_zero_precision(t_flags *flags);
+//void	ft_handle_dec_flags(long n, t_flags *flags, int has_sign, unsigned int *count);
 
 #endif
