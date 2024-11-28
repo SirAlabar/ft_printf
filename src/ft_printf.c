@@ -6,7 +6,7 @@
 /*   By: hluiz-ma <hluiz-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 19:48:39 by hluiz-ma          #+#    #+#             */
-/*   Updated: 2024/05/13 19:47:50 by hluiz-ma         ###   ########.fr       */
+/*   Updated: 2024/11/28 22:26:52 by hluiz-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	ft_printf(const char *format, ...)
 	if (!format || (format[0] == '%' && format[1] == '\0'))
 		return (-1);
 	flags = ft_init_flags();
-	if(!flags)
+	if (!flags)
 		return (-1);
 	va_start(args, format);
 	i = 0;
@@ -32,7 +32,7 @@ int	ft_printf(const char *format, ...)
 		if (format[i] == '%')
 		{
 			i++;
-			if(ft_parse_flags(format, &i, flags) == -1)
+			if (ft_parse_flags(format, &i, flags) == -1)
 				count = -1;
 			else
 				count += ft_format(format, &i, args, flags);
