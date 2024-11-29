@@ -56,6 +56,27 @@ int	ft_handle_zero_precision(t_flags *flags)
 	return (count);
 }
 
+static void	ft_handle_dec_precision(long n, t_flags *flags, int has_sign,
+		unsigned int *count)
+{
+	int		width;
+	int		len;
+	long	num;
+
+	num = n;
+	if (n < 0)
+		num = -num;
+	len = ft_decimal_len(num);
+	if (flags->precision > len)
+	{
+		width = flags->width - (flags->precision + has_sign);
+		if (width > 0)
+			ft_put_width(width, ' ', count);
+		*count += ft_print_sign(flags, n);
+		ft_put_width(flags->precision - len, '0', count);
+	}
+}
+
 void	ft_handle_dec_flags(long n, t_flags *flags, int has_sign,
 		unsigned int *count)
 {
@@ -66,16 +87,10 @@ void	ft_handle_dec_flags(long n, t_flags *flags, int has_sign,
 
 	num = n;
 	if (n < 0)
-		num = -n;
+		num = -num;
 	len = ft_decimal_len(num);
 	if (flags->precision > len)
-	{
-		width = flags->width - (flags->precision + has_sign);
-		if (width > 0)
-			ft_put_width(width, ' ', count);
-		*count += ft_print_sign(flags, n);
-		ft_put_width(flags->precision - len, '0', count);
-	}
+		ft_handle_dec_precision(n, flags, has_sign, count);
 	else if (flags->width > len + has_sign)
 	{
 		width = flags->width - (len + has_sign);
