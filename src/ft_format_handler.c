@@ -41,6 +41,27 @@ static int	ft_is_flag(char c)
 		|| ft_isdigit(c));
 }
 
+static int	ft_parse_numeric_flags(const char *format, unsigned int *i,
+		t_flags *flags)
+{
+	if (format[*i] == '.')
+	{
+		(*i)++;
+		flags->precision = ft_atoi(format + *i);
+		while (ft_isdigit(format[*i]))
+			(*i)++;
+		return (1);
+	}
+	if (ft_isdigit(format[*i]))
+	{
+		flags->width = ft_atoi(format + *i);
+		while (ft_isdigit(format[*i]))
+			(*i)++;
+		return (1);
+	}
+	return (0);
+}
+
 int	ft_parse_flags(const char *format, unsigned int *i, t_flags *flags)
 {
 	ft_reset_flags(flags);
@@ -56,21 +77,8 @@ int	ft_parse_flags(const char *format, unsigned int *i, t_flags *flags)
 			flags->space = 1;
 		else if (format[*i] == '+')
 			flags->plus = 1;
-		else if ((format[*i] == '.'))
-		{
-			(*i)++;
-			flags->precision = ft_atoi(format + *i);
-			while (ft_isdigit(format[*i]))
-				(*i)++;
+		else if (ft_parse_numeric_flags(format, i, flags))
 			continue ;
-		}
-		else if (ft_isdigit(format[*i]))
-		{
-			flags->width = ft_atoi(format + *i);
-			while (ft_isdigit(format[*i]))
-				(*i)++;
-			continue ;
-		}
 		(*i)++;
 	}
 	flags->type = format[*i];

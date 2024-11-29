@@ -76,7 +76,8 @@ int	ft_print_pointer(size_t ptr, t_flags *flags)
 	return (count);
 }
 
-int	ft_format(const char *format, unsigned int *i, va_list args, t_flags *flags)
+static int	ft_format_basic(const char *format, unsigned int *i,
+		va_list args, t_flags *flags)
 {
 	int	count;
 
@@ -99,6 +100,17 @@ int	ft_format(const char *format, unsigned int *i, va_list args, t_flags *flags)
 		else
 			count += ft_print_decimal(va_arg(args, int), flags);
 	}
+	return (count);
+}
+
+int	ft_format(const char *format, unsigned int *i, va_list args, t_flags *flags)
+{
+	int	count;
+
+	count = 0;
+	if (format[*i] == 'c' || format[*i] == 's' || format[*i] == 'p'
+		|| format[*i] == 'd' || format[*i] == 'i')
+		count += ft_format_basic(format, i, args, flags);
 	else if (format[*i] == 'u')
 		count += ft_print_unsigned(va_arg(args, unsigned int));
 	else if (format[*i] == 'x' || format[*i] == 'X')
