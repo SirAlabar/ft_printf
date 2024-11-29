@@ -87,6 +87,6 @@ int				ft_decimal_len(long n);
 int				ft_print_left_hex(t_flags *flags, unsigned int number);
 int				ft_print_left_dec(t_flags *flags, long number);
 int				ft_print_str_left(char *str, t_flags *flags);
-int	ft_print_precision(t_flags *flags, long *number, int len);
+int				ft_print_precision(t_flags *flags, long *number, int len);
 
 #endif

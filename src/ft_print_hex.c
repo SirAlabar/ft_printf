@@ -45,9 +45,9 @@ static unsigned int	ft_print_hex_recursive(unsigned long nb, char *symbols)
 unsigned int	ft_print_hex(unsigned long nb, t_flags *flags, int is_recursive)
 {
 	unsigned int	count;
-	char		*symbols;
-	int			len;
-	int			prefix_len;
+	char			*symbols;
+	int				len;
+	int				prefix_len;
 
 	count = 0;
 	if (flags->type == 'X')
