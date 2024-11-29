@@ -6,7 +6,7 @@
 /*   By: hluiz-ma <hluiz-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 21:15:19 by hluiz-ma          #+#    #+#             */
-/*   Updated: 2024/11/28 22:37:20 by hluiz-ma         ###   ########.fr       */
+/*   Updated: 2024/11/29 19:49:11 by hluiz-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ void			ft_handle_hex_flags(unsigned long nb, int len, t_flags *flags,
 					unsigned int *count);
 int				ft_handle_zero_precision(t_flags *flags);
 int				ft_handle_width(int width, int minus, int has_zero);
-
 int				ft_hex_len(unsigned int nb);
 
 // print_left

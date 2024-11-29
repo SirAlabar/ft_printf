@@ -6,7 +6,7 @@
 /*   By: hluiz-ma <hluiz-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 19:13:18 by hluiz-ma          #+#    #+#             */
-/*   Updated: 2024/11/29 19:52:03 by hluiz-ma         ###   ########.fr       */
+/*   Updated: 2024/11/29 19:56:26 by hluiz-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,31 +56,56 @@ int	ft_handle_zero_precision(t_flags *flags)
 	return (count);
 }
 
+static void	ft_handle_dec_precision(long n, t_flags *flags, int has_sign,
+		unsigned int *count)
+{
+	int		width;
+	int		len;
+	long	num;
+
+	num = n;
+	if (n < 0)
+		num = -num;
+	len = ft_decimal_len(num);
+	if (flags->precision > len)
+	{
+		width = flags->width - (flags->precision + has_sign);
+		if (width > 0)
+			ft_put_width(width, ' ', count);
+		*count += ft_print_sign(flags, n);
+		ft_put_width(flags->precision - len, '0', count);
+	}
+}
+
 void	ft_handle_dec_flags(long n, t_flags *flags, int has_sign,
 		unsigned int *count)
 {
 	int		width;
+	int		len;
 	char	pad;
 	long	num;
 
 	num = n;
 	if (n < 0)
 		num = -num;
-	if (flags->precision > ft_decimal_len(num))
+	len = ft_decimal_len(num);
+	if (flags->precision > len)
+		ft_handle_dec_precision(n, flags, has_sign, count);
+	else if (flags->width > len + has_sign)
 	{
-		*count += ft_print_sign(flags, n);
-		ft_put_width(flags->precision - ft_decimal_len(num), '0', count);
-		return ;
+		width = flags->width - (len + has_sign);
+		pad = ' ';
+		if (flags->zero && flags->precision == -1)
+		{
+			pad = '0';
+			*count += ft_print_sign(flags, n);
+		}
+		if (!flags->minus)
+			ft_put_width(width, pad, count);
+		if (pad == ' ')
+			*count += ft_print_sign(flags, n);
 	}
-	width = flags->width - (ft_decimal_len(num) + has_sign);
-	pad = ' ';
-	if (flags->zero && flags->precision == -1)
-		pad = '0';
-	if (pad == '0')
-		*count += ft_print_sign(flags, n);
-	if (!flags->minus && width > 0)
-		ft_put_width(width, pad, count);
-	if (pad == ' ')
+	else
 		*count += ft_print_sign(flags, n);
 }
 
