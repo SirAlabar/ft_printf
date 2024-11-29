@@ -6,7 +6,7 @@
 /*   By: hluiz-ma <hluiz-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 19:13:18 by hluiz-ma          #+#    #+#             */
-/*   Updated: 2024/11/28 22:40:18 by hluiz-ma         ###   ########.fr       */
+/*   Updated: 2024/11/29 20:04:17 by hluiz-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,34 @@ static unsigned int	ft_print_hex_recursive(unsigned long nb, char *symbols)
 		count += ft_putchar(symbols[nb % 16]);
 	}
 	return (count);
+}
+
+void	ft_handle_hex_flags(unsigned long nb, int len, t_flags *flags,
+		unsigned int *count)
+{
+	int	width;
+	int	pad_len;
+
+	width = flags->width - len;
+	if (flags->hash && nb != 0)
+		width = width - 2;
+	pad_len = 0;
+	if (flags->precision > len)
+		pad_len = flags->precision - len;
+	if (!flags->minus)
+	{
+		if (flags->zero && flags->precision == -1)
+		{
+			if (flags->hash && nb != 0)
+				ft_put_prefix(flags->type, count);
+			ft_put_width(width - pad_len, '0', count);
+		}
+		else
+			ft_put_width(width - pad_len, ' ', count);
+	}
+	if (flags->hash && nb != 0 && !flags->zero)
+		ft_put_prefix(flags->type, count);
+	ft_put_width(pad_len, '0', count);
 }
 
 unsigned int	ft_print_hex(unsigned long nb, t_flags *flags, int is_recursive)

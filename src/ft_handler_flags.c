@@ -6,7 +6,7 @@
 /*   By: hluiz-ma <hluiz-ma@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 19:13:18 by hluiz-ma          #+#    #+#             */
-/*   Updated: 2024/11/29 19:56:26 by hluiz-ma         ###   ########.fr       */
+/*   Updated: 2024/11/29 20:04:33 by hluiz-ma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,28 @@ static void	ft_handle_dec_precision(long n, t_flags *flags, int has_sign,
 	}
 }
 
+static void	ft_handle_width_and_pad(long n, t_flags *flags, int width,
+		unsigned int *count)
+{
+	char	pad;
+
+	pad = ' ';
+	if (flags->zero && flags->precision == -1)
+	{
+		pad = '0';
+		*count += ft_print_sign(flags, n);
+	}
+	if (!flags->minus)
+		ft_put_width(width, pad, count);
+	if (pad == ' ')
+		*count += ft_print_sign(flags, n);
+}
+
 void	ft_handle_dec_flags(long n, t_flags *flags, int has_sign,
 		unsigned int *count)
 {
 	int		width;
 	int		len;
-	char	pad;
 	long	num;
 
 	num = n;
@@ -94,45 +110,8 @@ void	ft_handle_dec_flags(long n, t_flags *flags, int has_sign,
 	else if (flags->width > len + has_sign)
 	{
 		width = flags->width - (len + has_sign);
-		pad = ' ';
-		if (flags->zero && flags->precision == -1)
-		{
-			pad = '0';
-			*count += ft_print_sign(flags, n);
-		}
-		if (!flags->minus)
-			ft_put_width(width, pad, count);
-		if (pad == ' ')
-			*count += ft_print_sign(flags, n);
+		ft_handle_width_and_pad(n, flags, width, count);
 	}
 	else
 		*count += ft_print_sign(flags, n);
-}
-
-void	ft_handle_hex_flags(unsigned long nb, int len, t_flags *flags,
-		unsigned int *count)
-{
-	int	width;
-	int	pad_len;
-
-	width = flags->width - len;
-	if (flags->hash && nb != 0)
-		width = width - 2;
-	pad_len = 0;
-	if (flags->precision > len)
-		pad_len = flags->precision - len;
-	if (!flags->minus)
-	{
-		if (flags->zero && flags->precision == -1)
-		{
-			if (flags->hash && nb != 0)
-				ft_put_prefix(flags->type, count);
-			ft_put_width(width - pad_len, '0', count);
-		}
-		else
-			ft_put_width(width - pad_len, ' ', count);
-	}
-	if (flags->hash && nb != 0 && !flags->zero)
-		ft_put_prefix(flags->type, count);
-	ft_put_width(pad_len, '0', count);
 }
