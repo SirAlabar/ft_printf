@@ -27,12 +27,27 @@ int	ft_hex_len(unsigned int nb)
 	return (len);
 }
 
+static unsigned int	ft_print_hex_recursive(unsigned long nb, char *symbols)
+{
+	unsigned int	count;
+
+	count = 0;
+	if (nb < 16)
+		count += ft_putchar(symbols[nb]);
+	else
+	{
+		count += ft_print_hex_recursive(nb / 16, symbols);
+		count += ft_putchar(symbols[nb % 16]);
+	}
+	return (count);
+}
+
 unsigned int	ft_print_hex(unsigned long nb, t_flags *flags, int is_recursive)
 {
 	unsigned int	count;
-	char			*symbols;
-	int				len;
-	int				prefix_len;
+	char		*symbols;
+	int			len;
+	int			prefix_len;
 
 	count = 0;
 	if (flags->type == 'X')
@@ -44,13 +59,7 @@ unsigned int	ft_print_hex(unsigned long nb, t_flags *flags, int is_recursive)
 		ft_handle_hex_flags(nb, len, flags, &count);
 	if (nb == 0 && flags->precision == 0)
 		return (count);
-	if (nb < 16)
-		count += ft_putchar(symbols[nb]);
-	else
-	{
-		count += ft_print_hex(nb / 16, flags, 1);
-		count += ft_putchar(symbols[nb % 16]);
-	}
+	count += ft_print_hex_recursive(nb, symbols);
 	if (!is_recursive && flags->minus)
 	{
 		prefix_len = 0;

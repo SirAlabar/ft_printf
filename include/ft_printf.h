@@ -60,7 +60,6 @@ int				ft_print_char(char c, t_flags *flags);
 int				ft_print_str(char *str, t_flags *flags);
 unsigned int	ft_print_hex(unsigned long nb, t_flags *flags,
 					int is_recursive);
-unsigned int ft_print_hex_recursive(unsigned long nb, t_flags *flags, unsigned int *count, char *symbols);
 int				ft_print_decimal(long n, t_flags *flags);
 int				ft_print_unsigned(unsigned int n);
 int				ft_print_pointer(size_t ptr, t_flags *flags);
