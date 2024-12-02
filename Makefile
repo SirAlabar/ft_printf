@@ -6,7 +6,7 @@
 #    By: hluiz-ma <hluiz-ma@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/07 21:15:44 by hluiz-ma          #+#    #+#              #
-#    Updated: 2024/11/18 19:17:31 by hluiz-ma         ###   ########.fr        #
+#    Updated: 2024/12/02 14:06:01 by hluiz-ma         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,11 +60,11 @@ $(NAME): $(OBJS)
 	@echo "$(RED)𓄿 𓅓  Made by Alabar 𓄿 𓅓$(RESET)"
 
 # Bonus compilation
-bonus: $(OBJS_BONUS)
+bonus: $(OBJS)
 	@make -C $(LIBFT_DIR)
 	@cp $(LIBFT) $(NAME)
-	@$(AR) $(NAME) $(OBJS_BONUS)
-	@echo "$(GREEN)ft_printf bonus features compiled successfully!$(RESET)"
+	@$(AR) $(NAME) $(OBJS)
+	@echo "$(GREEN)ft_printf library compiled successfully!$(RESET)"
 	@echo "$(RED)𓄿 𓅓  Made by Alabar 𓄿 𓅓$(RESET)"
 
 # Compile source files
